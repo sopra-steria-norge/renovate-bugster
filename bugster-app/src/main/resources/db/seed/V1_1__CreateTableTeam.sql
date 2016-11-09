@@ -1,6 +1,6 @@
 create table Team (
   id SERIAL PRIMARY KEY,
-  name TEXT NOT NULL,
-  short_name TEXT NOT NULL,
+  name VARCHAR2(50) NOT NULL,
+  short_name VARCHAR2(5) NOT NULL,
   active BOOLEAN DEFAULT TRUE
 );

@@ -42,11 +42,7 @@ public abstract class AppConfigFile {
         }
 
         HikariDataSource dataSource = new HikariDataSource();
-        if (matcher1.group(1).equals("postgres")) {
-            dataSource.setJdbcUrl("jdbc:postgresql://" + matcher1.group(4));
-        } else {
-            throw new RuntimeException("Unexpected database type " + databaseUrl);
-        }
+        dataSource.setJdbcUrl(databaseUrl);
         dataSource.setUsername(matcher1.group(2));
         dataSource.setPassword(matcher1.group(3));
         return dataSource;
@@ -54,7 +50,7 @@ public abstract class AppConfigFile {
 
     protected DataSource createDataSource(String prefix) {
         DataSource dataSource = createDataSource(prefix, prefix);
-       // migrateDataSource(prefix, dataSource);
+        migrateDataSource(prefix, dataSource);
         return dataSource;
     }
 
