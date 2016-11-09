@@ -54,7 +54,8 @@ public abstract class AppConfigFile {
 
     protected DataSource createDataSource(String prefix) {
         DataSource dataSource = createDataSource(prefix, prefix);
-        return migrateDataSource(prefix, dataSource);
+       // migrateDataSource(prefix, dataSource);
+        return dataSource;
     }
 
     protected DataSource migrateDataSource(String prefix, DataSource dataSource) {
