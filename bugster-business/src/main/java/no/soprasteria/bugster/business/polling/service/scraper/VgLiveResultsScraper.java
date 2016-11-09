@@ -86,7 +86,7 @@ public class VgLiveResultsScraper extends ResultsScraper {
         Score score = new Score(parseInt(home.text()), parseInt(away.text()));
         // TODO: Check if extra time!
         // TODO: Handle extratime
-        if(penaltyScores.isEmpty()) {
+        if(!penaltyScores.isEmpty()) {
             score.setExtraTime(true);
 
             score.setPenalties(true);
