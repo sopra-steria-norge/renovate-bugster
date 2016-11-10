@@ -13,8 +13,8 @@ public class FootballMatch implements Match {
     public FootballMatch(Team homeTeam, Team awayTeam, Score score, MatchStatus status) {
         this.homeTeam = homeTeam;
         this.awayTeam = awayTeam;
-        this.score = score;
         this.status = status;
+        score = score;
     }
 
     @Override

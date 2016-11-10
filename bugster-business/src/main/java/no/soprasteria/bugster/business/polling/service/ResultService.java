@@ -21,4 +21,8 @@ public class ResultService {
         List<Match> poll = resultsScraper.poll();
         return poll.stream().filter(match -> ((FootballMatch)match).getStatus().equals(status)).collect(Collectors.toList());
     }
+
+    void setResultsScraper(ResultsScraper resultsScraper) {
+        this.resultsScraper = resultsScraper;
+    }
 }

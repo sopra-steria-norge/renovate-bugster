@@ -3,17 +3,15 @@ package no.soprasteria.bugster.business.match.domain;
 
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class ScoreTest {
+
     @Test
     public void testGetResult() throws Exception {
-        Score score = new Score(1, 2);
-        assertEquals(Score.Result.B, score.getResult());
-        score = new Score(1, 1);
-        assertEquals(Score.Result.U, score.getResult());
-        score = new Score(1, 0);
-        assertEquals(Score.Result.H, score.getResult());
+        assertThat(new Score(1, 0).getResult()).isEqualTo(Score.Result.H);
+        assertThat(new Score(1, 1).getResult()).isEqualTo(Score.Result.U);
+        assertThat(new Score(1, 2).getResult()).isEqualTo(Score.Result.B);
     }
 
     @Test(expected = IllegalArgumentException.class)
