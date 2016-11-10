@@ -14,7 +14,7 @@ public class FootballMatch implements Match {
         this.homeTeam = homeTeam;
         this.awayTeam = awayTeam;
         this.status = status;
-        score = score;
+        this.score = score;
     }
 
     @Override
@@ -62,6 +62,16 @@ public class FootballMatch implements Match {
             return toString + score.toString();
         } else {
             return toString + " har ikke startet.";
+        }
+    }
+
+    @Override
+    public int compareTo(Match o) {
+        int homeTeamCompare = getHomeTeam().getName().compareTo(o.getHomeTeam().getName());
+        if (homeTeamCompare != 0 ) {
+            return homeTeamCompare;
+        } else {
+            return getAwayTeam().getName().compareTo(getAwayTeam().getName());
         }
     }
 }

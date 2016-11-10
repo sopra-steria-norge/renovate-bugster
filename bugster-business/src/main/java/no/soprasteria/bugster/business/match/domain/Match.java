@@ -2,7 +2,7 @@ package no.soprasteria.bugster.business.match.domain;
 
 import no.soprasteria.bugster.business.team.domain.Team;
 
-public interface Match {
+public interface Match extends Comparable<Match> {
     Team getHomeTeam();
 
     void setHomeTeam(Team homeTeam);
