@@ -4,7 +4,8 @@ import no.soprasteria.bugster.business.team.domain.Team;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
 
 import static java.util.Arrays.asList;
 import static no.soprasteria.bugster.business.match.domain.MatchStatus.FINISHED;
@@ -23,8 +24,12 @@ public class FootballMatchTest {
         FootballMatch match3 = new FootballMatch(til, vif, new Score(0, 0), FINISHED);
         FootballMatch match4 = new FootballMatch(rbk, til, new Score(0, 0), FINISHED);
 
-        Set<FootballMatch> matches = new TreeSet(asList(match1, match2, match3, match4));
+        List<FootballMatch> matches = asList(match1, match2, match3, match4);
+        Collections.sort(matches);
+        assertThat(matches).containsExactly(match2, match4, match3, match1);
 
-        assertThat(matches).containsExactly(match4, match2, match3, match1);
+        Collections.reverse(matches);
+        Collections.sort(matches);
+        assertThat(matches).containsExactly(match2, match4, match3, match1);
     }
 }
