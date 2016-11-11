@@ -10,7 +10,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -26,20 +25,6 @@ public class ResultServiceTest {
     @Before
     public void setup() {
         resultService.setResultsScraper(resultsScraperMock);
-    }
-
-    @Test
-    public void should_return_matches_of_specific_type() throws Exception {
-        List<Match> allMatches = new ArrayList<>();
-        allMatches.add(createMatch(MatchStatus.SCHEDULED));
-        allMatches.add(createMatch(MatchStatus.SCHEDULED));
-        allMatches.add(createMatch(MatchStatus.ONGOING));
-        allMatches.add(createMatch(MatchStatus.FINISHED));
-        when(resultsScraperMock.poll()).thenReturn(allMatches);
-
-        assertThat(resultService.findByStatus(MatchStatus.SCHEDULED)).hasSize(2);
-        assertThat(resultService.findByStatus(MatchStatus.ONGOING)).hasSize(1);
-        assertThat(resultService.findByStatus(MatchStatus.FINISHED)).hasSize(1);
     }
 
     @Test

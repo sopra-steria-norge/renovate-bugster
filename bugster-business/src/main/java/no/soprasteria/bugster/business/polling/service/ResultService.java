@@ -3,6 +3,7 @@ package no.soprasteria.bugster.business.polling.service;
 import no.soprasteria.bugster.business.match.domain.FootballMatch;
 import no.soprasteria.bugster.business.match.domain.Match;
 import no.soprasteria.bugster.business.match.domain.MatchStatus;
+import no.soprasteria.bugster.business.match.service.MatchService;
 import no.soprasteria.bugster.business.polling.service.scraper.ResultsScraper;
 import no.soprasteria.bugster.business.polling.service.scraper.VgLiveResultsScraper;
 
@@ -18,7 +19,7 @@ public class ResultService {
     }
 
     public List<Match> findByStatus(MatchStatus status) {
-        List<Match> poll = resultsScraper.poll();
+        List<Match> poll = new MatchService().findAll();
         return poll.stream().filter(match -> ((FootballMatch)match).getStatus().equals(status)).collect(Collectors.toList());
     }
 
