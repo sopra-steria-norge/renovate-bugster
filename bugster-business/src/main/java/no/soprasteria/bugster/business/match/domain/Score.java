@@ -52,7 +52,7 @@ public class Score {
     }
 
     public void setPenalties(boolean penalties) {
-        this.penalties = penalties;
+        penalties = penalties;
     }
 
     public boolean isExtraTime() {
