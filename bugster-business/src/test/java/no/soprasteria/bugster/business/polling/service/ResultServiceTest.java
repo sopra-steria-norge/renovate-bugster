@@ -28,6 +28,16 @@ public class ResultServiceTest {
     }
 
     @Test
+    public void should_return_scheduled_matches() throws Exception {
+        List<Match> allMatches = new ArrayList<>();
+        allMatches.add(createMatch(MatchStatus.SCHEDULED));
+        allMatches.add(createMatch(MatchStatus.FINISHED));
+        when(resultsScraperMock.poll()).thenReturn(allMatches);
+
+        assertThat(resultService.findByStatus(MatchStatus.SCHEDULED)).isNotEmpty();
+    }
+
+    @Test
     public void should_return_all_matches() throws Exception {
         List<Match> allMatches = new ArrayList<>();
         allMatches.add(createMatch(MatchStatus.SCHEDULED));
