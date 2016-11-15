@@ -5,6 +5,7 @@ import no.soprasteria.bugster.business.team.domain.Team;
 
 public class FootballMatch implements Match {
 
+    private long id;
     private Team homeTeam;
     private Team awayTeam;
     private Score score;
@@ -53,6 +54,14 @@ public class FootballMatch implements Match {
 
     public void setStatus(MatchStatus status) {
         this.status = status;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     @Override

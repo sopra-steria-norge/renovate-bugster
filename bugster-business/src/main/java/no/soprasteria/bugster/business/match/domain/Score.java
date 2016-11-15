@@ -2,12 +2,11 @@ package no.soprasteria.bugster.business.match.domain;
 
 public class Score {
 
+    private int id;
     private int home;
     private int away;
-    private int homePenalties;
-    private int awayPenalties;
-    private boolean extraTime;
-    private boolean penalties;
+    private Integer homePenalties;
+    private Integer awayPenalties;
 
     public Score(int home, int away) throws IllegalArgumentException {
         if(home < 0 || away < 0) {
@@ -48,19 +47,7 @@ public class Score {
     }
 
     public boolean isPenalties() {
-        return penalties;
-    }
-
-    public void setPenalties(boolean penalties) {
-        penalties = penalties;
-    }
-
-    public boolean isExtraTime() {
-        return extraTime;
-    }
-
-    public void setExtraTime(boolean extraTime) {
-        this.extraTime = extraTime;
+        return (awayPenalties != null && homePenalties != null);
     }
 
     public int getAwayPenalties() {
@@ -77,6 +64,14 @@ public class Score {
 
     public void setHomePenalties(int homePenalties) {
         this.homePenalties = homePenalties;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public enum Result {

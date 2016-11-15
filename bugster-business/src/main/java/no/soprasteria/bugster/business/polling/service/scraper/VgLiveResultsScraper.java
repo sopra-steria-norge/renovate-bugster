@@ -87,9 +87,6 @@ public class VgLiveResultsScraper extends ResultsScraper {
         // TODO: Check if extra time!
         // TODO: Handle extratime
         if(!penaltyScores.isEmpty()) {
-            score.setExtraTime(true);
-
-            score.setPenalties(true);
             Element element = penaltyScores.get(0);
             Elements homeScore = element.getElementsByClass("hscore");
             Elements awayScore = element.getElementsByClass("ascore");

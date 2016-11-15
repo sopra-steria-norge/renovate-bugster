@@ -1,6 +1,8 @@
 package no.soprasteria.bugster.application.controller;
 
 import com.google.gson.Gson;
+import no.soprasteria.bugster.application.server.AppConfig;
+import no.soprasteria.bugster.application.server.EuroAppConfigFile;
 import no.soprasteria.bugster.business.match.domain.FootballMatch;
 import no.soprasteria.bugster.business.match.domain.Match;
 import no.soprasteria.bugster.business.match.domain.MatchStatus;
@@ -16,7 +18,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Path("/result")
-public class ResultController {
+public class VgliveNowResultController {
 
     private ResultService service = new ResultService();
     private Gson gson = new Gson();

@@ -1,6 +1,7 @@
 package no.soprasteria.bugster.application.server;
 
-import no.soprasteria.bugster.application.scheduling.results.ResultPollerJob;
+import no.soprasteria.bugster.application.scheduling.results.LiveResultPollerJob;
+import no.soprasteria.bugster.application.scheduling.results.OutdatedResultsPollerJob;
 import no.soprasteria.bugster.infrastructure.config.AppConfigFile;
 import no.soprasteria.bugster.infrastructure.db.Database;
 import no.soprasteria.bugster.infrastructure.util.ExceptionUtil;
@@ -19,11 +20,11 @@ import static org.quartz.JobBuilder.newJob;
 import static org.quartz.SimpleScheduleBuilder.simpleSchedule;
 import static org.quartz.TriggerBuilder.newTrigger;
 
-class EuroAppConfigFile extends AppConfigFile implements AppConfig {
+public class EuroAppConfigFile extends AppConfigFile implements AppConfig {
 
     private Database database;
 
-    EuroAppConfigFile() throws IOException {
+    EuroAppConfigFile() {
         super(IOUtil.extractResourceFile("seedapp.properties"));
     }
 
@@ -70,21 +71,40 @@ class EuroAppConfigFile extends AppConfigFile implements AppConfig {
         Scheduler sched = null;
         try {
             sched = schedFact.getScheduler();
-
+            sched.getContext().put("config", this);
             sched.start();
-            JobDetail job = newJob(ResultPollerJob.class)
-                    .withIdentity("resultPollerJob", "group1")
+            JobDetail job = newJob(LiveResultPollerJob.class)
+                    .withIdentity("liveResultPollerJob", "group2")
                     .build();
             Trigger trigger = newTrigger()
-                    .withIdentity("resultPollerJob", "group1")
+                    .withIdentity("liveResultPollerJob", "group2")
                     .startNow()
                     .withSchedule(simpleSchedule()
                             .withIntervalInMinutes(5)
                             .repeatForever())
                     .build();
             sched.scheduleJob(job, trigger);
+            JobDetail job2 = newJob(OutdatedResultsPollerJob.class)
+                    .withIdentity("outdatedResultPollerJob", "group1")
+                    .build();
+            Trigger trigger2 = newTrigger()
+                    .withIdentity("outdatedResultPollerJob", "group1")
+                    .startNow()
+                    .withSchedule(simpleSchedule()
+                            .withIntervalInMinutes(5)
+                            .repeatForever())
+                    .build();
+            sched.scheduleJob(job2, trigger2);
         } catch (SchedulerException e) {
             e.printStackTrace();
         }
+    }
+
+    private static class SingletonHolder {
+        private static AppConfig instance = new EuroAppConfigFile();
+    }
+
+    public static AppConfig getInstance() {
+        return SingletonHolder.instance;
     }
 }
