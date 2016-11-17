@@ -2,7 +2,7 @@ package no.soprasteria.bugster.business.polling.service;
 
 import no.soprasteria.bugster.business.match.domain.FootballMatch;
 import no.soprasteria.bugster.business.match.domain.Match;
-import no.soprasteria.bugster.business.match.domain.MatchStatus;
+import no.soprasteria.bugster.business.match.domain.OldMatchStatus;
 import no.soprasteria.bugster.business.match.domain.Score;
 import no.soprasteria.bugster.business.polling.service.scraper.ResultsScraper;
 import no.soprasteria.bugster.business.team.domain.Team;
@@ -30,24 +30,24 @@ public class ResultServiceTest {
     @Test
     public void should_return_scheduled_matches() throws Exception {
         List<Match> allMatches = new ArrayList<>();
-        allMatches.add(createMatch(MatchStatus.SCHEDULED));
-        allMatches.add(createMatch(MatchStatus.FINISHED));
+        allMatches.add(createMatch(OldMatchStatus.SCHEDULED));
+        allMatches.add(createMatch(OldMatchStatus.FINISHED));
         when(resultsScraperMock.poll()).thenReturn(allMatches);
 
-        assertThat(resultService.findByStatus(MatchStatus.SCHEDULED)).isNotEmpty();
+        assertThat(resultService.findByStatus(OldMatchStatus.SCHEDULED)).isNotEmpty();
     }
 
     @Test
     public void should_return_all_matches() throws Exception {
         List<Match> allMatches = new ArrayList<>();
-        allMatches.add(createMatch(MatchStatus.SCHEDULED));
-        allMatches.add(createMatch(MatchStatus.FINISHED));
+        allMatches.add(createMatch(OldMatchStatus.SCHEDULED));
+        allMatches.add(createMatch(OldMatchStatus.FINISHED));
         when(resultsScraperMock.poll()).thenReturn(allMatches);
 
         assertThat(resultService.findAll()).hasSize(2);
     }
 
-    private Match createMatch(MatchStatus matchStatus) {
+    private Match createMatch(OldMatchStatus matchStatus) {
         return new FootballMatch(new Team("VIF"), new Team("LSK"), new Score(1, 1), matchStatus);
     }
 }

@@ -4,9 +4,6 @@ import com.google.gson.Gson;
 import no.soprasteria.bugster.application.server.AppConfig;
 import no.soprasteria.bugster.application.server.EuroAppConfigFile;
 import no.soprasteria.bugster.business.match.domain.FootballMatch;
-import no.soprasteria.bugster.business.match.domain.Match;
-import no.soprasteria.bugster.business.match.domain.MatchStatus;
-import no.soprasteria.bugster.business.polling.service.ResultService;
 import no.soprasteria.bugster.infrastructure.db.repository.MatchRepository;
 
 import javax.ws.rs.GET;

@@ -67,7 +67,7 @@ public class FootballMatch implements Match {
     @Override
     public String toString() {
         String toString = "[" + homeTeam.getName() + " vs " + awayTeam.getName() + "] ";
-        if(status != MatchStatus.SCHEDULED) {
+        if(status != MatchStatus.NOT_STARTED) {
             return toString + score.toString();
         } else {
             return toString + " har ikke startet.";

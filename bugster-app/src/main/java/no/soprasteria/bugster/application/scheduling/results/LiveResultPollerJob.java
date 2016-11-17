@@ -3,7 +3,7 @@ package no.soprasteria.bugster.application.scheduling.results;
 import no.soprasteria.bugster.application.server.AppConfig;
 import no.soprasteria.bugster.business.match.domain.FootballMatch;
 import no.soprasteria.bugster.business.match.domain.Match;
-import no.soprasteria.bugster.business.polling.service.scraper.VgLiveResultsScraper;
+import no.soprasteria.bugster.business.polling.service.scraper.OldVgLiveResultsScraper;
 import no.soprasteria.bugster.infrastructure.db.repository.MatchRepository;
 import no.soprasteria.bugster.infrastructure.db.repository.TeamRepository;
 import org.quartz.*;
@@ -31,7 +31,7 @@ public class LiveResultPollerJob implements Job {
             MatchRepository matchesRepository = new MatchRepository(config.getDatabase());
             TeamRepository teamRepository = new TeamRepository(config.getDatabase());
 
-            VgLiveResultsScraper resultsScraper = new VgLiveResultsScraper("http://old.vglive.no/");
+            OldVgLiveResultsScraper resultsScraper = new OldVgLiveResultsScraper("http://old.vglive.no/");
             List<Match> poll = resultsScraper.poll();
 
             for (Match match : poll) {

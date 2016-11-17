@@ -28,4 +28,13 @@ public class ScoreTest {
     public void testMustBePositiveIntegerAsArguments() throws Exception {
         new Score(-1, -1);
     }
+
+    @Test
+    public void penaltiesOrNot() {
+        Score score = new Score(1, 0);
+        score.setAwayPenalties(1);
+        score.setHomePenalties(5);
+        assertThat(score.isPenalties()).isTrue();
+        assertThat(new Score(1, 1).isPenalties()).isFalse();
+    }
 }

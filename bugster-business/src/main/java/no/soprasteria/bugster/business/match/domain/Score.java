@@ -5,8 +5,8 @@ public class Score {
     private int id;
     private int home;
     private int away;
-    private Integer homePenalties;
-    private Integer awayPenalties;
+    private Integer homePenalties = null;
+    private Integer awayPenalties = null;
 
     public Score(int home, int away) throws IllegalArgumentException {
         if(home < 0 || away < 0) {

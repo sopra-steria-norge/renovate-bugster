@@ -8,7 +8,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static java.util.Arrays.asList;
-import static no.soprasteria.bugster.business.match.domain.MatchStatus.FINISHED;
+import static no.soprasteria.bugster.business.match.domain.OldMatchStatus.FINISHED;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class FootballMatchTest {

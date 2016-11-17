@@ -1,8 +1,7 @@
 package no.soprasteria.bugster.infrastructure.db.repository;
 
-import no.soprasteria.bugster.application.server.AppConfig;
 import no.soprasteria.bugster.business.match.domain.FootballMatch;
-import no.soprasteria.bugster.business.match.domain.MatchStatus;
+import no.soprasteria.bugster.business.match.domain.OldMatchStatus;
 import no.soprasteria.bugster.business.match.domain.Score;
 import no.soprasteria.bugster.business.team.domain.Team;
 import no.soprasteria.bugster.infrastructure.db.Database;
@@ -52,7 +51,7 @@ public class MatchRepository {
         score.setHomePenalties(row.getInt("home_penalties"));
         score.setAwayPenalties(row.getInt("away_penalties"));
         score.setId(row.getInt("scoreId"));
-        FootballMatch match = new FootballMatch(homeTeam, awayTeam, score, MatchStatus.valueOf(row.getString("status")));
+        FootballMatch match = new FootballMatch(homeTeam, awayTeam, score, OldMatchStatus.valueOf(row.getString("status")));
         match.setId(row.getInt("id"));
         return match;
     }

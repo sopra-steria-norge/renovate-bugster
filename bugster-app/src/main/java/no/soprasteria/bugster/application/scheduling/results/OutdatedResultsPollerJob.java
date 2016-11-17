@@ -2,7 +2,7 @@ package no.soprasteria.bugster.application.scheduling.results;
 
 import no.soprasteria.bugster.application.server.AppConfig;
 import no.soprasteria.bugster.business.match.domain.FootballMatch;
-import no.soprasteria.bugster.business.polling.service.scraper.VgLiveResultsScraper;
+import no.soprasteria.bugster.business.polling.service.scraper.OldVgLiveResultsScraper;
 import no.soprasteria.bugster.business.match.domain.Match;
 import no.soprasteria.bugster.infrastructure.db.repository.MatchRepository;
 import org.quartz.*;
@@ -32,7 +32,7 @@ public class OutdatedResultsPollerJob implements Job {
             String randomDate = "2016" + generateRandomNumberString(1, 12, 2) + generateRandomNumberString(1, 31, 2);
 
 
-            VgLiveResultsScraper resultsScraper = new VgLiveResultsScraper("http://old.vglive.no/#frontpage=" + randomDate);
+            OldVgLiveResultsScraper resultsScraper = new OldVgLiveResultsScraper("http://old.vglive.no/#frontpage=" + randomDate);
             List<Match> poll = resultsScraper.poll();
 
             for (Match match : poll) {

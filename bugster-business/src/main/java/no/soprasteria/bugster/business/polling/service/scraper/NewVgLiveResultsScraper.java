@@ -1,9 +1,6 @@
 package no.soprasteria.bugster.business.polling.service.scraper;
 
-import no.soprasteria.bugster.business.match.domain.FootballMatch;
-import no.soprasteria.bugster.business.match.domain.Match;
-import no.soprasteria.bugster.business.match.domain.MatchStatus;
-import no.soprasteria.bugster.business.match.domain.Score;
+import no.soprasteria.bugster.business.match.domain.*;
 import no.soprasteria.bugster.business.team.domain.Team;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -17,13 +14,13 @@ import java.util.List;
 
 import static java.lang.Integer.parseInt;
 
-public class VgLiveResultsScraper extends ResultsScraper {
+public class NewVgLiveResultsScraper extends ResultsScraper {
 
     private static final String SCORE_CLASS_NAME = "score";
     private static final String PENALTY_CLASS_NAME = "penaltyResult";
-    private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(VgLiveResultsScraper.class);
+    private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(NewVgLiveResultsScraper.class);
 
-    public VgLiveResultsScraper(String url) {
+    public NewVgLiveResultsScraper(String url) {
         super(url);
     }
 
@@ -33,7 +30,7 @@ public class VgLiveResultsScraper extends ResultsScraper {
         log.info("Starter jobb for å hente resultater fra: " + this.getUrl());
         try {
             Document doc = Jsoup.connect(this.getUrl()).userAgent("Mozilla").get();
-            for (MatchStatus matchStatus : MatchStatus.values()) {
+            for (NewMatchStatus matchStatus : NewMatchStatus.values()) {
                 log.info("Henter kamper som har status " + matchStatus);
                 Elements elementsByClass = doc.getElementsByClass(matchStatus.getCssClass());
                 matches.addAll(mapToDomainObjects(elementsByClass, matchStatus));
@@ -46,7 +43,7 @@ public class VgLiveResultsScraper extends ResultsScraper {
         return matches;
     }
 
-    private List<Match> mapToDomainObjects(Elements elementsByClass, MatchStatus status) {
+    private List<Match> mapToDomainObjects(Elements elementsByClass, NewMatchStatus status) {
         List<Match> matches = new ArrayList<>();
         for (Element elementsByClas : elementsByClass) {
             Element match = elementsByClas.children().first();
@@ -63,11 +60,22 @@ public class VgLiveResultsScraper extends ResultsScraper {
         return matches;
     }
 
-    private Match getFootballMatch(Element match, MatchStatus status) throws IllegalArgumentException {
+    private Match getFootballMatch(Element match, NewMatchStatus status) throws IllegalArgumentException {
         Score score = extractScore(match);
         Team homeTeam = extractHomeTeam(match);
         Team awayTeam = extractAwayTeam(match);
-        return new FootballMatch(homeTeam, awayTeam, score, status);
+        return new FootballMatch(homeTeam, awayTeam, score, mapToDomainStatus(status));
+    }
+
+    private MatchStatus mapToDomainStatus(NewMatchStatus status) {
+        if (status.equals(NewMatchStatus.SCHEDULED)) {
+            return MatchStatus.NOT_STARTED;
+        } else if (status.equals(NewMatchStatus.ONGOING)) {
+            return MatchStatus.ONGOING;
+        } else if (status.equals(NewMatchStatus.FINISHED)) {
+            return MatchStatus.FINISHED;
+        }
+        throw new IllegalArgumentException("Invalid match-status.");
     }
 
     private Team extractHomeTeam(Element element) {
