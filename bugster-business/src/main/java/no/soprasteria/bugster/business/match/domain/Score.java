@@ -2,7 +2,7 @@ package no.soprasteria.bugster.business.match.domain;
 
 public class Score {
 
-    private int id;
+    private Integer id;
     private int home;
     private int away;
     private Integer homePenalties = null;
@@ -54,7 +54,7 @@ public class Score {
         return awayPenalties;
     }
 
-    public void setAwayPenalties(int awayPenalties) {
+    public void setAwayPenalties(Integer awayPenalties) {
         this.awayPenalties = awayPenalties;
     }
 
@@ -62,7 +62,7 @@ public class Score {
         return homePenalties;
     }
 
-    public void setHomePenalties(int homePenalties) {
+    public void setHomePenalties(Integer homePenalties) {
         this.homePenalties = homePenalties;
     }
 

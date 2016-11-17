@@ -3,15 +3,17 @@ package no.soprasteria.bugster.business.match.domain;
 
 import no.soprasteria.bugster.business.team.domain.Team;
 
+import java.util.Objects;
+
 public class FootballMatch implements Match {
 
-    private long id;
+    private Integer id;
     private Team homeTeam;
     private Team awayTeam;
     private Score score;
-    private MatchStatus status;
+    private String status;
 
-    public FootballMatch(Team homeTeam, Team awayTeam, Score score, MatchStatus status) {
+    public FootballMatch(Team homeTeam, Team awayTeam, Score score, String status) {
         this.homeTeam = homeTeam;
         this.awayTeam = awayTeam;
         this.status = status;
@@ -48,26 +50,26 @@ public class FootballMatch implements Match {
         this.score = score;
     }
 
-    public MatchStatus getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(MatchStatus status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 
-    public long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
     @Override
     public String toString() {
         String toString = "[" + homeTeam.getName() + " vs " + awayTeam.getName() + "] ";
-        if(status != MatchStatus.NOT_STARTED) {
+        if(!Objects.equals(status, "not-started")) {
             return toString + score.toString();
         } else {
             return toString + " har ikke startet.";

@@ -1,24 +1,27 @@
 package no.soprasteria.bugster.business.polling.service.scraper;
 
-import no.soprasteria.bugster.business.match.domain.*;
+import com.google.gson.Gson;
+import no.soprasteria.bugster.business.match.domain.FootballMatch;
+import no.soprasteria.bugster.business.match.domain.Match;
+import no.soprasteria.bugster.business.polling.service.scraper.vglive.VgLiveApi;
+import no.soprasteria.bugster.business.polling.service.scraper.vglive.event.Event;
+import no.soprasteria.bugster.business.polling.service.scraper.vglive.participant.Participant;
+import no.soprasteria.bugster.business.polling.service.scraper.vglive.score.ParticipantScore;
+import no.soprasteria.bugster.business.polling.service.scraper.vglive.score.Score;
 import no.soprasteria.bugster.business.team.domain.Team;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.nodes.TextNode;
-import org.jsoup.select.Elements;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import static java.lang.Integer.parseInt;
-
 public class NewVgLiveResultsScraper extends ResultsScraper {
 
-    private static final String SCORE_CLASS_NAME = "score";
-    private static final String PENALTY_CLASS_NAME = "penaltyResult";
     private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(NewVgLiveResultsScraper.class);
+    private Gson gson = new Gson();
 
     public NewVgLiveResultsScraper(String url) {
         super(url);
@@ -27,28 +30,48 @@ public class NewVgLiveResultsScraper extends ResultsScraper {
     @Override
     public List<Match> poll() {
         List<Match> matches = new ArrayList<>();
+        VgLiveApi vgLiveApi = null;
         log.info("Starter jobb for å hente resultater fra: " + this.getUrl());
         try {
-            Document doc = Jsoup.connect(this.getUrl()).userAgent("Mozilla").get();
-            for (NewMatchStatus matchStatus : NewMatchStatus.values()) {
-                log.info("Henter kamper som har status " + matchStatus);
-                Elements elementsByClass = doc.getElementsByClass(matchStatus.getCssClass());
-                matches.addAll(mapToDomainObjects(elementsByClass, matchStatus));
+            URL url = new URL(this.getUrl());
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            conn.setRequestProperty("Accept", "application/json");
+
+            if (conn.getResponseCode() != 200) {
+                throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
             }
 
+            BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
+
+            vgLiveApi = gson.fromJson(br, VgLiveApi.class);
+
+            conn.disconnect();
+
         } catch (IOException e) {
-            log.error("Noe gikk galt.", e);
+            e.printStackTrace();
         }
+        if(vgLiveApi != null) {
+            matches = mapToDomainObjects(vgLiveApi);
+        }
+
         log.info("Ferdig med jobb for å hente resultater fra: " + this.getUrl());
         return matches;
     }
 
-    private List<Match> mapToDomainObjects(Elements elementsByClass, NewMatchStatus status) {
+    private List<Match> mapToDomainObjects(VgLiveApi apiResult) {
         List<Match> matches = new ArrayList<>();
-        for (Element elementsByClas : elementsByClass) {
-            Element match = elementsByClas.children().first();
+        for (Event event : apiResult.getEvents()) {
             try {
-                Match footballMatch = getFootballMatch(match, status);
+                Team homeTeam = getTeamById(event.getParticipants()[0], apiResult.getParticipants());
+                Team awayTeam = getTeamById(event.getParticipants()[1], apiResult.getParticipants());
+                ParticipantScore homeTeamScore = getScoreByTeamId(event.getParticipants()[0], apiResult.getScores());
+                ParticipantScore awayTeamScore = getScoreByTeamId(event.getParticipants()[1], apiResult.getScores());
+                no.soprasteria.bugster.business.match.domain.Score score = new no.soprasteria.bugster.business.match.domain.Score(homeTeamScore.getOrdinaryTime(), awayTeamScore.getOrdinaryTime());
+                score.setHomePenalties(homeTeamScore.getPenaltyShootout());
+                score.setAwayPenalties(awayTeamScore.getPenaltyShootout());
+
+                FootballMatch footballMatch = new FootballMatch(homeTeam, awayTeam, score, event.getStatus().getType());
                 matches.add(footballMatch);
                 log.info(footballMatch.toString());
             } catch (Exception e) {
@@ -60,47 +83,19 @@ public class NewVgLiveResultsScraper extends ResultsScraper {
         return matches;
     }
 
-    private Match getFootballMatch(Element match, NewMatchStatus status) throws IllegalArgumentException {
-        Score score = extractScore(match);
-        Team homeTeam = extractHomeTeam(match);
-        Team awayTeam = extractAwayTeam(match);
-        return new FootballMatch(homeTeam, awayTeam, score, mapToDomainStatus(status));
+    private Team getTeamById(int id, List<Participant> participants) {
+        Participant participant = participants.stream()
+                .filter(it -> it.getId() == id)
+                .findFirst()
+                .orElseThrow(IllegalArgumentException::new);
+        return new Team(participant.getName());
     }
 
-    private MatchStatus mapToDomainStatus(NewMatchStatus status) {
-        if (status.equals(NewMatchStatus.SCHEDULED)) {
-            return MatchStatus.NOT_STARTED;
-        } else if (status.equals(NewMatchStatus.ONGOING)) {
-            return MatchStatus.ONGOING;
-        } else if (status.equals(NewMatchStatus.FINISHED)) {
-            return MatchStatus.FINISHED;
-        }
-        throw new IllegalArgumentException("Invalid match-status.");
-    }
-
-    private Team extractHomeTeam(Element element) {
-        return new Team(((TextNode)element.childNode(1)).text());
-    }
-
-    private Team extractAwayTeam(Element element) {
-        return new Team(((TextNode)element.childNode(element.childNodeSize()-1)).text());
-    }
-
-    private Score extractScore(Element match) {
-        Elements scores = match.getElementsByClass(SCORE_CLASS_NAME);
-        Element home = scores.get(0);
-        Element away = scores.get(1);
-        Elements penaltyScores = match.getElementsByClass(PENALTY_CLASS_NAME);
-        Score score = new Score(parseInt(home.text()), parseInt(away.text()));
-        // TODO: Check if extra time!
-        // TODO: Handle extratime
-        if(!penaltyScores.isEmpty()) {
-            Element element = penaltyScores.get(0);
-            Elements homeScore = element.getElementsByClass("hscore");
-            Elements awayScore = element.getElementsByClass("ascore");
-            score.setAwayPenalties(parseInt(awayScore.get(0).text()));
-            score.setHomePenalties(parseInt(homeScore.get(0).text()));
-        }
-        return score;
+    private ParticipantScore getScoreByTeamId(int id, List<Score> scores) {
+        Score score = scores.stream()
+                .filter(it -> it.getParticipantId() == id)
+                .findFirst()
+                .orElseThrow(IllegalArgumentException::new);
+        return score.getScore();
     }
 }

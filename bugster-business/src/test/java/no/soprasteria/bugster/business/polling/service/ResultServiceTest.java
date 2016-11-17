@@ -34,7 +34,7 @@ public class ResultServiceTest {
         allMatches.add(createMatch(OldMatchStatus.FINISHED));
         when(resultsScraperMock.poll()).thenReturn(allMatches);
 
-        assertThat(resultService.findByStatus(OldMatchStatus.SCHEDULED)).isNotEmpty();
+        assertThat(resultService.findByStatus("scheduled")).isNotEmpty();
     }
 
     @Test
@@ -48,6 +48,6 @@ public class ResultServiceTest {
     }
 
     private Match createMatch(OldMatchStatus matchStatus) {
-        return new FootballMatch(new Team("VIF"), new Team("LSK"), new Score(1, 1), matchStatus);
+        return new FootballMatch(new Team("VIF"), new Team("LSK"), new Score(1, 1), matchStatus.getCssClass());
     }
 }

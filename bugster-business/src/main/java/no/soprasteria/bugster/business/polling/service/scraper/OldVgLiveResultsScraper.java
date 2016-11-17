@@ -67,7 +67,7 @@ public class OldVgLiveResultsScraper extends ResultsScraper {
         Score score = extractScore(match);
         Team homeTeam = extractHomeTeam(match);
         Team awayTeam = extractAwayTeam(match);
-        return new FootballMatch(homeTeam, awayTeam, score, status);
+        return new FootballMatch(homeTeam, awayTeam, score, status.getCssClass());
     }
 
     private Team extractHomeTeam(Element element) {

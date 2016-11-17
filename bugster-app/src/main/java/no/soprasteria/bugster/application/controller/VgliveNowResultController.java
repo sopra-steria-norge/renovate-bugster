@@ -7,6 +7,7 @@ import no.soprasteria.bugster.business.polling.service.ResultService;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 import java.util.List;
@@ -27,9 +28,9 @@ public class VgliveNowResultController {
 
     @GET
     @Produces("application/json")
-    @Path("/ongoing")
-    public Response ongoing() {
-        List<Match> poll = service.findByStatus(OldMatchStatus.ONGOING);
+    @Path("/{status}")
+    public Response filtered(@PathParam("status") String status) {
+        List<Match> poll = service.findByStatus(status);
         return Response.status(200).entity(gson.toJson(poll)).build();
     }
 }

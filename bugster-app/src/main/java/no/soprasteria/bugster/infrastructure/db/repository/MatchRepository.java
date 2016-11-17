@@ -29,7 +29,7 @@ public class MatchRepository {
             Score score = match.getScore();
             int scoreId = database.insert("insert into score (home, away, home_penalties, away_penalties) values (?, ?, ?, ?) returning id", score.getHome(), score.getAway(), score.getHomePenalties(), score.getAwayPenalties());
             score.setId(scoreId);
-            int matchId = database.insert("INSERT INTO match (home_team, away_team, score, status) VALUES (?, ?, ?, ?) returning id", match.getHomeTeam().getId(), match.getAwayTeam().getId(), scoreId, match.getStatus().getCssClass());
+            int matchId = database.insert("INSERT INTO match (home_team, away_team, score, status) VALUES (?, ?, ?, ?) returning id", match.getHomeTeam().getId(), match.getAwayTeam().getId(), scoreId, match.getStatus());
             match.setId(matchId);
         });
     }
@@ -51,7 +51,7 @@ public class MatchRepository {
         score.setHomePenalties(row.getInt("home_penalties"));
         score.setAwayPenalties(row.getInt("away_penalties"));
         score.setId(row.getInt("scoreId"));
-        FootballMatch match = new FootballMatch(homeTeam, awayTeam, score, OldMatchStatus.valueOf(row.getString("status")));
+        FootballMatch match = new FootballMatch(homeTeam, awayTeam, score, row.getString("status"));
         match.setId(row.getInt("id"));
         return match;
     }

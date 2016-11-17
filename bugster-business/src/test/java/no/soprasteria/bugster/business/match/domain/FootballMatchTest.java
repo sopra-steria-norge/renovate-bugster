@@ -19,10 +19,10 @@ public class FootballMatchTest {
         Team vif = new Team("VIF");
         Team rbk = new Team("RBK");
         Team til = new Team("TIL");
-        FootballMatch match1 = new FootballMatch(vif, rbk, new Score(0, 0), FINISHED);
-        FootballMatch match2 = new FootballMatch(rbk, vif, new Score(0, 0), FINISHED);
-        FootballMatch match3 = new FootballMatch(til, vif, new Score(0, 0), FINISHED);
-        FootballMatch match4 = new FootballMatch(rbk, til, new Score(0, 0), FINISHED);
+        FootballMatch match1 = new FootballMatch(vif, rbk, new Score(0, 0), FINISHED.getCssClass());
+        FootballMatch match2 = new FootballMatch(rbk, vif, new Score(0, 0), FINISHED.getCssClass());
+        FootballMatch match3 = new FootballMatch(til, vif, new Score(0, 0), FINISHED.getCssClass());
+        FootballMatch match4 = new FootballMatch(rbk, til, new Score(0, 0), FINISHED.getCssClass());
 
         List<FootballMatch> matches = asList(match1, match2, match3, match4);
         Collections.sort(matches);

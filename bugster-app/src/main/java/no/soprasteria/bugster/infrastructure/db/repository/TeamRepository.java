@@ -28,4 +28,12 @@ public class TeamRepository {
         team.setId(row.getInt("id"));
         return team;
     }
+
+    public void insert(Team team) {
+        database.doInTransaction(() -> {
+            database.insert("INSERT INTO TEAM (name) values (?)", team.getName());
+            Optional<Team> byName = findByName(team.getName());
+            team.setId(byName.get().getId());
+        });
+    }
 }
