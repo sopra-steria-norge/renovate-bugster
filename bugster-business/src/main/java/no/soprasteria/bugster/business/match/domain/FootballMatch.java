@@ -12,12 +12,14 @@ public class FootballMatch implements Match {
     private Team awayTeam;
     private Score score;
     private String status;
+    private String startDate;
 
-    public FootballMatch(Team homeTeam, Team awayTeam, Score score, String status) {
+    public FootballMatch(Team homeTeam, Team awayTeam, Score score, String status, String startDate) {
         this.homeTeam = homeTeam;
         this.awayTeam = awayTeam;
         this.status = status;
         this.score = score;
+        this.startDate = startDate;
     }
 
     @Override
@@ -84,5 +86,13 @@ public class FootballMatch implements Match {
         } else {
             return getAwayTeam().getName().compareTo(getAwayTeam().getName());
         }
+    }
+
+    public String getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
     }
 }

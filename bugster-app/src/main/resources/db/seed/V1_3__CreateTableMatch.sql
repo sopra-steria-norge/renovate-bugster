@@ -4,5 +4,6 @@ create table Match (
   away_team SERIAL REFERENCES Team(id),
   score SERIAL REFERENCES Score(id),
   status VARCHAR2(10) NOT NULL,
-  CONSTRAINT match_uniqueness UNIQUE (home_team, away_team, score)
+  start_date VARCHAR2(50) NOT NULL,
+  CONSTRAINT match_uniqueness UNIQUE (home_team, away_team, start_date)
 );

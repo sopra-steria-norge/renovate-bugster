@@ -11,7 +11,7 @@ public class MatchServiceTest {
 
     @Test
     public void should_find_all_matches() throws Exception {
-        List<Match> allMatches = new MatchService().findAll();
+        List<Match> allMatches = new MatchService(repository).findAll();
 
         assertThat(!allMatches.isEmpty());
     }

@@ -20,7 +20,7 @@ public class MatchRepository {
     }
 
     public List<FootballMatch> list() {
-        return database.queryForList("SELECT m.id ,m.status, ht.name as home_team, at.name as away_team, s.home, s.away, s.id as scoreId, s.home_penalties, s.away_penalties, s.home_extratime, s.away_extratime " +
+        return database.queryForList("SELECT m.id ,m.status, m.start_date, ht.name as home_team, at.name as away_team, s.home, s.away, s.id as scoreId, s.home_penalties, s.away_penalties, s.home_extratime, s.away_extratime " +
                 "FROM Match m " +
                 "INNER JOIN Team ht ON m.home_team = ht.id " +
                 "INNER JOIN Team at ON m.away_team = at.id " +
@@ -33,7 +33,7 @@ public class MatchRepository {
                 Score score = match.getScore();
                 int scoreId = database.insert("insert into score (home, away, home_extratime, away_extratime, home_penalties, away_penalties) values (?, ?, ?, ?)", score.getHome(), score.getAway(), score.getHomeExtraTime(), score.getAwayExtraTime(), score.getHomePenalties(), score.getAwayPenalties());
                 score.setId(scoreId);
-                int matchId = database.insert("INSERT INTO match (home_team, away_team, score, status) VALUES (?, ?, ?, ?)", match.getHomeTeam().getId(), match.getAwayTeam().getId(), scoreId, match.getStatus());
+                int matchId = database.insert("INSERT INTO match (home_team, away_team, score, start_date, status) VALUES (?, ?, ?, ?)", match.getHomeTeam().getId(), match.getAwayTeam().getId(), scoreId, match.getStartDate(), match.getStatus());
                 match.setId(matchId);
             });
         } catch (Exception e) {
@@ -54,13 +54,13 @@ public class MatchRepository {
         score.setHomeExtraTime(row.getInt("home_extratime"));
         score.setAwayExtraTime(row.getInt("away_extratime"));
         score.setId(row.getInt("scoreId"));
-        FootballMatch match = new FootballMatch(homeTeam, awayTeam, score, row.getString("status"));
+        FootballMatch match = new FootballMatch(homeTeam, awayTeam, score, row.getString("status"), row.getString("start_date"));
         match.setId(row.getInt("id"));
         return match;
     }
 
     public Optional<FootballMatch> find(int id) {
-        return database.queryForSingle("SELECT m.id ,m.status, ht.name as home_team, at.name as away_team, s.home, s.away, s.id as scoreId, s.home_penalties, s.away_penalties, s.home_extratime, s.away_extratime " +
+        return database.queryForSingle("SELECT m.id ,m.status, m.start_date, ht.name as home_team, at.name as away_team, s.home, s.away, s.id as scoreId, s.home_penalties, s.away_penalties, s.home_extratime, s.away_extratime " +
                 "FROM Match m " +
                 "INNER JOIN Team ht ON m.home_team = ht.id " +
                 "INNER JOIN Team at ON m.away_team = at.id " +
@@ -69,11 +69,20 @@ public class MatchRepository {
     }
 
     public List<FootballMatch> findByName(String name) {
-        return database.queryForList("SELECT m.id ,m.status, ht.name as home_team, at.name as away_team, s.home, s.away, s.id as scoreId, s.home_penalties, s.away_penalties, s.home_extratime, s.away_extratime " +
+        return database.queryForList("SELECT m.id, m.status, m.start_date, ht.name as home_team, at.name as away_team, s.home, s.away, s.id as scoreId, s.home_penalties, s.away_penalties, s.home_extratime, s.away_extratime " +
                 "FROM Match m " +
                 "INNER JOIN Team ht ON m.home_team = ht.id " +
                 "INNER JOIN Team at ON m.away_team = at.id " +
                 "INNER JOIN Score s ON m.score = s.id" +
                 "WHERE ht.name = ? OR at.name = ?", this::toFootballMatch, name, name);
+    }
+
+    public List<FootballMatch> findByDate(String date) {
+        return database.queryForList("SELECT m.id ,m.status, m.start_date, ht.name as home_team, at.name as away_team, s.home, s.away, s.id as scoreId, s.home_penalties, s.away_penalties, s.home_extratime, s.away_extratime " +
+                "FROM Match m " +
+                "INNER JOIN Team ht ON m.home_team = ht.id " +
+                "INNER JOIN Team at ON m.away_team = at.id " +
+                "INNER JOIN Score s ON m.score = s.id" +
+                "WHERE start_date LIKE ?", this::toFootballMatch, "%" + date + "%");
     }
 }

@@ -13,22 +13,21 @@ import org.quartz.impl.StdSchedulerFactory;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Path;
 
 import static org.quartz.JobBuilder.newJob;
 import static org.quartz.SimpleScheduleBuilder.simpleSchedule;
 import static org.quartz.TriggerBuilder.newTrigger;
 
-public class EuroAppConfigFile extends AppConfigFile implements AppConfig {
+public class ReloadableAppConfigFile extends AppConfigFile implements AppConfig {
 
     private Database database;
 
-    EuroAppConfigFile() {
+    ReloadableAppConfigFile() {
         super(IOUtil.extractResourceFile("seedapp.properties"));
     }
 
-    EuroAppConfigFile(Path configFile) {
+    ReloadableAppConfigFile(Path configFile) {
         super(configFile);
     }
 
@@ -101,7 +100,7 @@ public class EuroAppConfigFile extends AppConfigFile implements AppConfig {
     }
 
     private static class SingletonHolder {
-        private static AppConfig instance = new EuroAppConfigFile();
+        private static AppConfig instance = new ReloadableAppConfigFile();
     }
 
     public static AppConfig getInstance() {

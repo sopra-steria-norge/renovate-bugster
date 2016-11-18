@@ -16,7 +16,7 @@ public class TeamRepository {
         this.database = database;
     }
 
-    public List<Team> findAll() {
+    public List<Team> list() {
         return database.queryForList("SELECT * FROM TEAM", this::toTeam);
     }
 

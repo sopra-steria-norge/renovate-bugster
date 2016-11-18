@@ -74,7 +74,7 @@ public class NewVgLiveResultsScraper extends ResultsScraper {
                 score.setHomePenalties(homeTeamScore.getPenaltyShootout());
                 score.setAwayPenalties(awayTeamScore.getPenaltyShootout());
 
-                footballMatch = new FootballMatch(homeTeam, awayTeam, score, event.getStatus().getType());
+                footballMatch = new FootballMatch(homeTeam, awayTeam, score, event.getStatus().getType(), event.getStartDate());
                 matches.add(footballMatch);
                 log.info(footballMatch.toString());
             } catch (Exception e) {

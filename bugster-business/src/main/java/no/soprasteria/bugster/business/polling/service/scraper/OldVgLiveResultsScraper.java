@@ -2,7 +2,7 @@ package no.soprasteria.bugster.business.polling.service.scraper;
 
 import no.soprasteria.bugster.business.match.domain.FootballMatch;
 import no.soprasteria.bugster.business.match.domain.Match;
-import no.soprasteria.bugster.business.match.domain.OldMatchStatus;
+import no.soprasteria.bugster.business.match.domain.MatchStatus;
 import no.soprasteria.bugster.business.match.domain.Score;
 import no.soprasteria.bugster.business.team.domain.Team;
 import org.jsoup.Jsoup;
@@ -33,7 +33,7 @@ public class OldVgLiveResultsScraper extends ResultsScraper {
         log.info("Starter jobb for å hente resultater fra: " + this.getUrl());
         try {
             Document doc = Jsoup.connect(this.getUrl()).userAgent("Mozilla").get();
-            for (OldMatchStatus matchStatus : OldMatchStatus.values()) {
+            for (MatchStatus matchStatus : MatchStatus.values()) {
                 log.info("Henter kamper som har status " + matchStatus);
                 Elements elementsByClass = doc.getElementsByClass(matchStatus.getCssClass());
                 matches.addAll(mapToDomainObjects(elementsByClass, matchStatus));
@@ -46,7 +46,7 @@ public class OldVgLiveResultsScraper extends ResultsScraper {
         return matches;
     }
 
-    private List<Match> mapToDomainObjects(Elements elementsByClass, OldMatchStatus status) {
+    private List<Match> mapToDomainObjects(Elements elementsByClass, MatchStatus status) {
         List<Match> matches = new ArrayList<>();
         for (Element elementsByClas : elementsByClass) {
             Element match = elementsByClas.children().first();
@@ -63,11 +63,11 @@ public class OldVgLiveResultsScraper extends ResultsScraper {
         return matches;
     }
 
-    private Match getFootballMatch(Element match, OldMatchStatus status) throws IllegalArgumentException {
+    private Match getFootballMatch(Element match, MatchStatus status) throws IllegalArgumentException {
         Score score = extractScore(match);
         Team homeTeam = extractHomeTeam(match);
         Team awayTeam = extractAwayTeam(match);
-        return new FootballMatch(homeTeam, awayTeam, score, status.getCssClass());
+        return new FootballMatch(homeTeam, awayTeam, score, status.getCssClass(), "NA");
     }
 
     private Team extractHomeTeam(Element element) {

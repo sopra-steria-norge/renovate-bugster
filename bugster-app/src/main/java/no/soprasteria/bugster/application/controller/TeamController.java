@@ -2,9 +2,11 @@ package no.soprasteria.bugster.application.controller;
 
 import com.google.gson.Gson;
 import no.soprasteria.bugster.application.server.AppConfig;
-import no.soprasteria.bugster.application.server.EuroAppConfigFile;
+import no.soprasteria.bugster.application.server.ReloadableAppConfigFile;
 import no.soprasteria.bugster.business.match.domain.FootballMatch;
+import no.soprasteria.bugster.business.match.service.MatchService;
 import no.soprasteria.bugster.business.team.domain.Team;
+import no.soprasteria.bugster.business.team.service.TeamService;
 import no.soprasteria.bugster.infrastructure.db.repository.MatchRepository;
 import no.soprasteria.bugster.infrastructure.db.repository.TeamRepository;
 
@@ -20,38 +22,41 @@ import java.util.Optional;
 public class TeamController {
 
     private Gson gson = new Gson();
-    private TeamRepository teamRepository;
-    private MatchRepository matchRepository;
+    private TeamService teamService;
+    private MatchService matchService;
 
     public TeamController() {
-        AppConfig instance = EuroAppConfigFile.getInstance();
-        teamRepository = new TeamRepository(instance.getDatabase());
-        matchRepository = new MatchRepository(instance.getDatabase());
+        AppConfig instance = ReloadableAppConfigFile.getInstance();
+        teamService = new TeamService(new TeamRepository(instance.getDatabase()));
+        matchService = new MatchService(new MatchRepository(instance.getDatabase()));
     }
 
     @GET
     @Produces("application/json")
     @Path("/all")
     public Response all() {
-        List<Team> teams = teamRepository.findAll();
+        List<Team> teams = teamService.findAll();
         return Response.status(200).entity(gson.toJson(teams)).build();
     }
 
     @GET
     @Produces("application/json")
-    @Path("/{name}")
+    @Path("/search/name/{name}")
     public Response findByName(@PathParam("name") String name) {
-        Optional<Team> team = teamRepository.findByName(name);
-        return Response.status(200).entity(gson.toJson(team)).build();
+        Optional<Team> team = teamService.findByName(name);
+        if(team.isPresent()) {
+            return Response.status(200).entity(gson.toJson(team)).build();
+        }
+        return Response.status(400).build();
     }
 
     @GET
     @Produces("application/json")
     @Path("/results/{name}")
     public Response resultsByName(@PathParam("name") String name) {
-        Optional<Team> team = teamRepository.findByName(name);
+        Optional<Team> team = teamService.findByName(name);
         if(team.isPresent()) {
-            List<FootballMatch> byName = matchRepository.findByName(team.get().getName());
+            List<FootballMatch> byName = matchService.findAllByName(team.get().getName());
             Response.status(200).entity(gson.toJson(byName)).build();
         }
         return Response.status(400).build();

@@ -1,11 +1,11 @@
 package no.soprasteria.bugster.business.match.domain;
 
-public enum OldMatchStatus {
+public enum MatchStatus {
     SCHEDULED("scheduled"),ONGOING("onGoing"),FINISHED("finished");
 
     private String cssClass;
 
-    OldMatchStatus(String cssClass) {
+    MatchStatus(String cssClass) {
         this.cssClass = cssClass;
     }
 

@@ -27,7 +27,7 @@ public class AppServer {
         LogUtil.setupLogging("logging-simpleserverseed.xml");
         IOUtil.extractResourceFile("seedapp.properties");
 
-        AppServer server = new AppServer(new EuroAppConfigFile());
+        AppServer server = new AppServer(new ReloadableAppConfigFile());
         server.start();
 
         if (System.getProperty("startBrowser") != null) {

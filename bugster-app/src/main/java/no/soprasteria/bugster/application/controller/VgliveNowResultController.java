@@ -2,7 +2,6 @@ package no.soprasteria.bugster.application.controller;
 
 import com.google.gson.Gson;
 import no.soprasteria.bugster.business.match.domain.Match;
-import no.soprasteria.bugster.business.match.domain.OldMatchStatus;
 import no.soprasteria.bugster.business.polling.service.ResultService;
 
 import javax.ws.rs.GET;
