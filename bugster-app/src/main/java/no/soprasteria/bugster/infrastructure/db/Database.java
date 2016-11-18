@@ -92,9 +92,13 @@ public class Database {
      */
     public int insert(String query, Object... parameters) {
         return executeDbOperation(query, Arrays.asList(parameters), stmt -> {
-            try (ResultSet rs = stmt.executeQuery()) {
+            try {
+                stmt.executeUpdate();
+                ResultSet rs = stmt.getGeneratedKeys();
                 rs.next();
-                return rs.getInt("id");
+                return rs.getInt(1);
+            } catch (Exception e) {
+                return -1;
             }
         });
     }
@@ -201,7 +205,7 @@ public class Database {
         try {
             return doWithConnection(conn -> {
                 log.info("Executing: {} with params {}", query, parameters);
-                try (PreparedStatement prepareStatement = conn.prepareStatement(query)) {
+                try (PreparedStatement prepareStatement = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
                     int index = 1;
                     for (Object object : parameters) {
                         prepareStatement.setObject(index++, object);

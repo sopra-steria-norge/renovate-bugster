@@ -40,4 +40,12 @@ public class MatchController {
         Optional<FootballMatch> footballMatch = repository.find(id);
         return Response.status(200).entity(gson.toJson(footballMatch)).build();
     }
+
+    @GET
+    @Produces("application/json")
+    @Path("/find/{id}")
+    public Response findByName(@PathParam("id") String id) {
+        List<FootballMatch> byName = repository.findByName(id);
+        return Response.status(200).entity(gson.toJson(byName)).build();
+    }
 }

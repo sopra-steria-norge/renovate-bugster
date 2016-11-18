@@ -35,7 +35,7 @@ public class OutdatedResultsPollerJob implements Job {
             MatchRepository matchesRepository = new MatchRepository(config.getDatabase());
             TeamRepository teamRepository = new TeamRepository(config.getDatabase());
 
-            String randomDate = "2016-" + generateRandomNumberString(1, 12, 2) + "-" + generateRandomNumberString(1, 31, 2);
+            String randomDate = "2016-" + generateRandomNumberString(1, 13, 2) + "-" + generateRandomNumberString(1, 32, 2);
 
             ResultsScraper resultsScraper = new NewVgLiveResultsScraper("https://api.vglive.no/v1/vg/events?date=" + randomDate);
             List<Match> poll = resultsScraper.poll();

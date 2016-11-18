@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 
 public class ResultService {
 
-    private ResultsScraper resultsScraper = new NewVgLiveResultsScraper("http://vglive.no");
+    private ResultsScraper resultsScraper = new NewVgLiveResultsScraper("https://vglive.no");
 
     public List<Match> findAll() {
         return resultsScraper.poll();

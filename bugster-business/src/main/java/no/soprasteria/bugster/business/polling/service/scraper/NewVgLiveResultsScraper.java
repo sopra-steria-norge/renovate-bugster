@@ -62,21 +62,24 @@ public class NewVgLiveResultsScraper extends ResultsScraper {
     private List<Match> mapToDomainObjects(VgLiveApi apiResult) {
         List<Match> matches = new ArrayList<>();
         for (Event event : apiResult.getEvents()) {
+            FootballMatch footballMatch = null;
             try {
                 Team homeTeam = getTeamById(event.getParticipants()[0], apiResult.getParticipants());
                 Team awayTeam = getTeamById(event.getParticipants()[1], apiResult.getParticipants());
                 ParticipantScore homeTeamScore = getScoreByTeamId(event.getParticipants()[0], apiResult.getScores());
                 ParticipantScore awayTeamScore = getScoreByTeamId(event.getParticipants()[1], apiResult.getScores());
                 no.soprasteria.bugster.business.match.domain.Score score = new no.soprasteria.bugster.business.match.domain.Score(homeTeamScore.getOrdinaryTime(), awayTeamScore.getOrdinaryTime());
+                score.setHomeExtraTime(homeTeamScore.getExtraTime());
+                score.setAwayExtraTime(awayTeamScore.getExtraTime());
                 score.setHomePenalties(homeTeamScore.getPenaltyShootout());
                 score.setAwayPenalties(awayTeamScore.getPenaltyShootout());
 
-                FootballMatch footballMatch = new FootballMatch(homeTeam, awayTeam, score, event.getStatus().getType());
+                footballMatch = new FootballMatch(homeTeam, awayTeam, score, event.getStatus().getType());
                 matches.add(footballMatch);
                 log.info(footballMatch.toString());
             } catch (Exception e) {
                 // Handle error
-                log.error("Feil i resultat. ", e);
+                log.error("Feil i resultat. " + footballMatch, e);
                 break;
             }
         }
