@@ -11,7 +11,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 import java.util.List;
 
-@Path("/result")
+@Path("/live")
 public class VgliveNowResultController {
 
     private ResultService service = new ResultService();
@@ -27,9 +27,17 @@ public class VgliveNowResultController {
 
     @GET
     @Produces("application/json")
-    @Path("/{status}")
+    @Path("/filter/{status}")
     public Response filtered(@PathParam("status") String status) {
         List<Match> poll = service.findByStatus(status);
         return Response.status(200).entity(gson.toJson(poll)).build();
+    }
+
+    @GET
+    @Produces("application/json")
+    @Path("/statuser")
+    public Response statuser() {
+        List<String> allStatuser = service.getAllStatuser();
+        return Response.status(200).entity(gson.toJson(allStatuser)).build();
     }
 }

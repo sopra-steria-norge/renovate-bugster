@@ -68,6 +68,14 @@ public class FootballMatch implements Match {
         this.id = id;
     }
 
+    public String getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
+    }
+
     @Override
     public String toString() {
         String toString = "[" + homeTeam.getName() + " vs " + awayTeam.getName() + "] ";
@@ -88,11 +96,4 @@ public class FootballMatch implements Match {
         }
     }
 
-    public String getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(String startDate) {
-        this.startDate = startDate;
-    }
 }

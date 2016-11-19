@@ -36,8 +36,4 @@ public class TeamRepository {
             team.setId(insert);
         });
     }
-
-    public void update(int id, Team team) {
-        throw new NotImplementedException();
-    }
 }

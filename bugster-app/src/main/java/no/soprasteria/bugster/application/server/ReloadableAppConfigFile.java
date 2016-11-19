@@ -67,7 +67,7 @@ public class ReloadableAppConfigFile extends AppConfigFile implements AppConfig 
 
         // Init scheduler
         SchedulerFactory schedFact = new StdSchedulerFactory();
-        Scheduler sched = null;
+        Scheduler sched;
         try {
             sched = schedFact.getScheduler();
             sched.getContext().put("config", this);
@@ -79,7 +79,7 @@ public class ReloadableAppConfigFile extends AppConfigFile implements AppConfig 
                     .withIdentity("liveResultPollerJob", "group2")
                     .startNow()
                     .withSchedule(simpleSchedule()
-                            .withIntervalInMinutes(5)
+                            .withIntervalInMinutes(2)
                             .repeatForever())
                     .build();
             sched.scheduleJob(job, trigger);
@@ -90,7 +90,7 @@ public class ReloadableAppConfigFile extends AppConfigFile implements AppConfig 
                     .withIdentity("outdatedResultPollerJob", "group1")
                     .startNow()
                     .withSchedule(simpleSchedule()
-                            .withIntervalInMinutes(5)
+                            .withIntervalInMinutes(2)
                             .repeatForever())
                     .build();
             sched.scheduleJob(job2, trigger2);

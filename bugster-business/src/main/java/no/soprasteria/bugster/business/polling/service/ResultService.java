@@ -21,6 +21,11 @@ public class ResultService {
         return poll.stream().filter(match -> ((FootballMatch)match).getStatus().equals(status)).collect(Collectors.toList());
     }
 
+    public List<String> getAllStatuser() {
+        List<Match> all = findAll();
+        return all.stream().map(match -> ((FootballMatch)match).getStatus()).collect(Collectors.toList());
+    }
+
     void setResultsScraper(ResultsScraper resultsScraper) {
         this.resultsScraper = resultsScraper;
     }
