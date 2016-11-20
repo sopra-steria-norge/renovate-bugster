@@ -1,5 +1,5 @@
 # renovate-bugster
-Applikasjon for "Java Craftmanship - Renoveringen"
+Applikasjon for workshopen "Java Craftmanship - Renoveringen"
 
 # Utgangspunkt
 En inhouse utvikler har gått banans i repoet og refactorert hele applikasjonen,
