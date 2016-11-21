@@ -113,7 +113,42 @@ public class Score {
         this.homeExtraTime = homeExtraTime;
     }
 
-    public enum Result {
+    public boolean isProbablyHandBallMatch() {
+        return home > 10 || away > 10;
+    }
+
+    enum Result {
         H,U,B
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Score score = (Score) o;
+
+        if (home != score.home) return false;
+        if (away != score.away) return false;
+        if (id != null ? !id.equals(score.id) : score.id != null) return false;
+        if (homeExtraTime != null ? !homeExtraTime.equals(score.homeExtraTime) : score.homeExtraTime != null)
+            return false;
+        if (awayExtraTime != null ? !awayExtraTime.equals(score.awayExtraTime) : score.awayExtraTime != null)
+            return false;
+        if (getHomePenalties() != (score.getHomePenalties()))
+            return false;
+        return getAwayPenalties() == (score.getAwayPenalties());
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + home;
+        result = 31 * result + away;
+        result = 31 * result + (homeExtraTime != null ? homeExtraTime.hashCode() : 0);
+        result = 31 * result + (awayExtraTime != null ? awayExtraTime.hashCode() : 0);
+        result = 31 * result + (Integer.valueOf(getHomePenalties()).hashCode());
+        result = 31 * result + (Integer.valueOf(getAwayPenalties()).hashCode());
+        return result;
     }
 }

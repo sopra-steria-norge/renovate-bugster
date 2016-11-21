@@ -3,7 +3,7 @@ package no.soprasteria.bugster.application.controller;
 import com.google.gson.Gson;
 import no.soprasteria.bugster.application.server.AppConfig;
 import no.soprasteria.bugster.application.server.ReloadableAppConfigFile;
-import no.soprasteria.bugster.business.match.domain.FootballMatch;
+import no.soprasteria.bugster.business.match.domain.Match;
 import no.soprasteria.bugster.business.match.service.MatchService;
 import no.soprasteria.bugster.infrastructure.db.repository.MatchRepository;
 
@@ -30,7 +30,7 @@ public class MatchController {
     @Produces("application/json")
     @Path("/all")
     public Response all() {
-        List<FootballMatch> list = matchService.findAll();
+        List<Match> list = matchService.findAll();
         return Response.status(200).entity(gson.toJson(list)).build();
     }
 
@@ -38,7 +38,7 @@ public class MatchController {
     @Produces("application/json")
     @Path("/search/id/{id}")
     public Response findById(@PathParam("id") int id) {
-        Optional<FootballMatch> footballMatch = matchService.findById(id);
+        Optional<Match> footballMatch = matchService.findById(id);
         if(footballMatch.isPresent()) {
             return Response.status(200).entity(gson.toJson(footballMatch)).build();
         }
@@ -49,7 +49,7 @@ public class MatchController {
     @Produces("application/json")
     @Path("/search/name/{id}")
     public Response findByName(@PathParam("id") String id) {
-        List<FootballMatch> byName = matchService.findAllByName(id);
+        List<Match> byName = matchService.findAllByName(id);
         return Response.status(200).entity(gson.toJson(byName)).build();
     }
 
@@ -57,7 +57,7 @@ public class MatchController {
     @Produces("application/json")
     @Path("/search/date/{id}")
     public Response findByDate(@PathParam("id") String date) {
-        List<FootballMatch> byName = matchService.findAllByDate(date);
+        List<Match> byName = matchService.findAllByDate(date);
         return Response.status(200).entity(gson.toJson(byName)).build();
     }
 }

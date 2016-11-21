@@ -2,9 +2,9 @@ package no.soprasteria.bugster.application.scheduling.results;
 
 import no.soprasteria.bugster.application.server.AppConfig;
 import no.soprasteria.bugster.business.match.domain.FootballMatch;
+import no.soprasteria.bugster.business.match.domain.HandballMatch;
 import no.soprasteria.bugster.business.match.domain.Match;
 import no.soprasteria.bugster.business.polling.service.scraper.NewVgLiveResultsScraper;
-import no.soprasteria.bugster.business.polling.service.scraper.OldVgLiveResultsScraper;
 import no.soprasteria.bugster.business.polling.service.scraper.ResultsScraper;
 import no.soprasteria.bugster.business.team.domain.Team;
 import no.soprasteria.bugster.infrastructure.db.repository.MatchRepository;
@@ -23,12 +23,13 @@ public class LiveResultPollerJob implements Job {
 
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
+        List<Match> poll = null;
         try {
             SchedulerContext schedulerContext = null;
             try {
                 schedulerContext = jobExecutionContext.getScheduler().getContext();
             } catch (SchedulerException e1) {
-               log.error("Feil med schedulercontext", e1);
+                log.error("Feil med schedulercontext", e1);
             }
             AppConfig config = (AppConfig) schedulerContext.get("config");
 
@@ -36,7 +37,7 @@ public class LiveResultPollerJob implements Job {
             TeamRepository teamRepository = new TeamRepository(config.getDatabase());
 
             ResultsScraper resultsScraper = new NewVgLiveResultsScraper("https://api.vglive.no/v1/vg/events");
-            List<Match> poll = resultsScraper.poll();
+            poll = resultsScraper.poll();
 
             for (Match match : poll) {
                 FootballMatch footballMatch = (FootballMatch) match;
@@ -45,7 +46,7 @@ public class LiveResultPollerJob implements Job {
                 matchesRepository.insert(footballMatch);
             }
         } catch (Exception e) {
-            log.error("Kall mot vglive feiler. Har jeg internett?", e);
+            log.error("Kall mot vglive feiler." + (poll == null ?  "Har jeg internett?" :  poll.get(0).hashCode()), e);
         }
     }
 

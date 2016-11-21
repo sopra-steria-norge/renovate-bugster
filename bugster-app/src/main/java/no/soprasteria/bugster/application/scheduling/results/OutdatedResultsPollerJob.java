@@ -1,9 +1,7 @@
 package no.soprasteria.bugster.application.scheduling.results;
 
 import no.soprasteria.bugster.application.server.AppConfig;
-import no.soprasteria.bugster.business.match.domain.FootballMatch;
 import no.soprasteria.bugster.business.polling.service.scraper.NewVgLiveResultsScraper;
-import no.soprasteria.bugster.business.polling.service.scraper.OldVgLiveResultsScraper;
 import no.soprasteria.bugster.business.match.domain.Match;
 import no.soprasteria.bugster.business.polling.service.scraper.ResultsScraper;
 import no.soprasteria.bugster.business.team.domain.Team;
@@ -41,7 +39,7 @@ public class OutdatedResultsPollerJob implements Job {
             List<Match> poll = resultsScraper.poll();
 
             for (Match match : poll) {
-                FootballMatch footballMatch = (FootballMatch) match;
+                Match match = match;
                 findOrCreateTeam(footballMatch.getHomeTeam(), teamRepository);
                 findOrCreateTeam(footballMatch.getAwayTeam(), teamRepository);
                 matchesRepository.insert(footballMatch);

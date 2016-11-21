@@ -12,7 +12,7 @@ import javax.ws.rs.core.Response;
 import java.util.List;
 
 @Path("/live")
-public class VgliveNowResultController {
+public class LiveResultsController {
 
     private ResultService service = new ResultService();
     private Gson gson = new Gson();
@@ -33,11 +33,4 @@ public class VgliveNowResultController {
         return Response.status(200).entity(gson.toJson(poll)).build();
     }
 
-    @GET
-    @Produces("application/json")
-    @Path("/statuser")
-    public Response statuser() {
-        List<String> allStatuser = service.getAllStatuser();
-        return Response.status(200).entity(gson.toJson(allStatuser)).build();
-    }
 }

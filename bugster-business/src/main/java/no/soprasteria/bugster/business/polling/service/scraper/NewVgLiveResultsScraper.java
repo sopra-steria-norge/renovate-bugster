@@ -62,7 +62,7 @@ public class NewVgLiveResultsScraper extends ResultsScraper {
     private List<Match> mapToDomainObjects(VgLiveApi apiResult) {
         List<Match> matches = new ArrayList<>();
         for (Event event : apiResult.getEvents()) {
-            FootballMatch footballMatch = null;
+            Match match = null;
             try {
                 Team homeTeam = getTeamById(event.getParticipants()[0], apiResult.getParticipants());
                 Team awayTeam = getTeamById(event.getParticipants()[1], apiResult.getParticipants());
@@ -74,12 +74,12 @@ public class NewVgLiveResultsScraper extends ResultsScraper {
                 score.setHomePenalties(homeTeamScore.getPenaltyShootout());
                 score.setAwayPenalties(awayTeamScore.getPenaltyShootout());
 
-                footballMatch = new FootballMatch(homeTeam, awayTeam, score, event.getStatus().getType(), event.getStartDate());
-                matches.add(footballMatch);
-                log.info(footballMatch.toString());
+                match = new FootballMatch(homeTeam, awayTeam, score, event.getStatus().getType(), event.getStartDate());
+                matches.add(match);
+                log.info(match.toString());
             } catch (Exception e) {
                 // Handle error
-                log.error("Feil i resultat. " + footballMatch, e);
+                log.error("Feil i resultat. " + match, e);
                 break;
             }
         }

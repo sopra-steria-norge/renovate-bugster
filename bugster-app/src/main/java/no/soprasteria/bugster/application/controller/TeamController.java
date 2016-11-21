@@ -3,7 +3,7 @@ package no.soprasteria.bugster.application.controller;
 import com.google.gson.Gson;
 import no.soprasteria.bugster.application.server.AppConfig;
 import no.soprasteria.bugster.application.server.ReloadableAppConfigFile;
-import no.soprasteria.bugster.business.match.domain.FootballMatch;
+import no.soprasteria.bugster.business.match.domain.Match;
 import no.soprasteria.bugster.business.match.service.MatchService;
 import no.soprasteria.bugster.business.team.domain.Team;
 import no.soprasteria.bugster.business.team.service.TeamService;
@@ -56,7 +56,7 @@ public class TeamController {
     public Response resultsByName(@PathParam("name") String name) {
         Optional<Team> team = teamService.findByName(name);
         if(team.isPresent()) {
-            List<FootballMatch> byName = matchService.findAllByName(team.get().getName());
+            List<Match> byName = matchService.findAllByName(team.get().getName());
             Response.status(200).entity(gson.toJson(byName)).build();
         }
         return Response.status(400).build();

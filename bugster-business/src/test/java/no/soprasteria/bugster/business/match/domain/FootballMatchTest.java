@@ -17,12 +17,12 @@ public class FootballMatchTest {
         Team vif = new Team("VIF");
         Team rbk = new Team("RBK");
         Team til = new Team("TIL");
-        FootballMatch match1 = new FootballMatch(vif, rbk, new Score(0, 0), FINISHED.getCssClass(), "");
-        FootballMatch match2 = new FootballMatch(rbk, vif, new Score(0, 0), FINISHED.getCssClass(), "");
-        FootballMatch match3 = new FootballMatch(til, vif, new Score(0, 0), FINISHED.getCssClass(), "");
-        FootballMatch match4 = new FootballMatch(rbk, til, new Score(0, 0), FINISHED.getCssClass(), "");
+        Match match1 = new FootballMatch(vif, rbk, new Score(0, 0), FINISHED.getCssClass(), "");
+        Match match2 = new FootballMatch(rbk, vif, new Score(0, 0), FINISHED.getCssClass(), "");
+        Match match3 = new FootballMatch(til, vif, new Score(0, 0), FINISHED.getCssClass(), "");
+        Match match4 = new FootballMatch(rbk, til, new Score(0, 0), FINISHED.getCssClass(), "");
 
-        List<FootballMatch> matches = asList(match1, match2, match3, match4);
+        List<Match> matches = asList(match1, match2, match3, match4);
         Collections.sort(matches);
         assertThat(matches).containsExactly(match2, match4, match3, match1);
 
