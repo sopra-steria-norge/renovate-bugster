@@ -2,12 +2,10 @@
 Applikasjon for workshopen "Java Craftmanship - Renoveringen"
 
 ## Utgangspunkt
-En inhouse utvikler har gått banans i repoet og refaktorert hele applikasjonen,
-han er strålende fornøyd med resultatet men sliter med å få den til å bygge igjen..
-Han er blant annet ganske grønn på maven..
+Svenn er en inhouse utvikler i prosjekt X. Han har dessverre hatt en dårlig dag på jobben og har tatt vann over hode når han fant ut at han skulle refaktorert hele applikasjonen,
+han er strålende fornøyd med resultatet, men sliter litt med å få den til å bygge igjen.
 
 Kan du hjelpe han få applikasjonen opp å kjøre slik at kjernefunksjonaliteten fungerer?
-
 ### Kjerne funksjonalitet
 Applikasjonen skal som et minimum dekke følgende funksjonalitet
 - Polling av vglive.no
