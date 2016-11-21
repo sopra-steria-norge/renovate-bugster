@@ -31,20 +31,22 @@ public class LiveResultPollerJob implements Job {
             } catch (SchedulerException e1) {
                 log.error("Feil med schedulercontext", e1);
             }
+            log.info("Henter config.");
             AppConfig config = (AppConfig) schedulerContext.get("config");
-
+            log.info("Oppretter repositories.");
             MatchRepository matchesRepository = new MatchRepository(config.getDatabase());
             TeamRepository teamRepository = new TeamRepository(config.getDatabase());
-
+            log.info("Starter polling");
             ResultsScraper resultsScraper = new NewVgLiveResultsScraper("https://api.vglive.no/v1/vg/events");
             poll = resultsScraper.poll();
-
+            log.info("Fant {} begivenheter", poll.size());
             for (Match match : poll) {
                 FootballMatch footballMatch = (FootballMatch) match;
                 findOrCreateTeam(footballMatch.getHomeTeam(), teamRepository);
                 findOrCreateTeam(footballMatch.getAwayTeam(), teamRepository);
                 matchesRepository.insert(footballMatch);
             }
+            log.info("Feridg med polling");
         } catch (Exception e) {
             log.error("Kall mot vglive feiler." + (poll == null ?  "Har jeg internett?" :  poll.get(0).hashCode()), e);
         }

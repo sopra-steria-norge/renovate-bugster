@@ -1,6 +1,7 @@
 package no.soprasteria.bugster.application.scheduling.results;
 
 import no.soprasteria.bugster.application.server.AppConfig;
+import no.soprasteria.bugster.business.match.domain.FootballMatch;
 import no.soprasteria.bugster.business.polling.service.scraper.NewVgLiveResultsScraper;
 import no.soprasteria.bugster.business.match.domain.Match;
 import no.soprasteria.bugster.business.polling.service.scraper.ResultsScraper;
@@ -21,6 +22,7 @@ public class OutdatedResultsPollerJob implements Job {
 
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
+        List<Match> poll = null;
         try {
             SchedulerContext schedulerContext = null;
             try {
@@ -28,24 +30,26 @@ public class OutdatedResultsPollerJob implements Job {
             } catch (SchedulerException e1) {
                 e1.printStackTrace();
             }
+            log.info("Henter config.");
             AppConfig config = (AppConfig) schedulerContext.get("config");
-
+            log.info("Oppretter repositories.");
             MatchRepository matchesRepository = new MatchRepository(config.getDatabase());
             TeamRepository teamRepository = new TeamRepository(config.getDatabase());
 
             String randomDate = "2016-" + generateRandomNumberString(1, 13, 2) + "-" + generateRandomNumberString(1, 32, 2);
-
+            log.info("Starter polling");
             ResultsScraper resultsScraper = new NewVgLiveResultsScraper("https://api.vglive.no/v1/vg/events?date=" + randomDate);
-            List<Match> poll = resultsScraper.poll();
-
+            poll = resultsScraper.poll();
+            log.info("Fant {} begivenheter", poll.size());
             for (Match match : poll) {
-                Match match = match;
+                FootballMatch footballMatch = (FootballMatch) match;
                 findOrCreateTeam(footballMatch.getHomeTeam(), teamRepository);
                 findOrCreateTeam(footballMatch.getAwayTeam(), teamRepository);
                 matchesRepository.insert(footballMatch);
             }
+            log.info("Feridg med polling");
         } catch (Exception e) {
-            log.error("Kall mot vglive feiler. Har jeg internett?");
+            log.error("Kall mot vglive feiler." + (poll == null ?  "Har jeg internett?" :  poll.get(0).hashCode()), e);
         }
     }
 
