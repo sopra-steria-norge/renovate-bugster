@@ -27,6 +27,9 @@ Applikasjonen skal som et minimum dekke følgende funksjonalitet
         - Søke etter kamper på en gitt dag
         
         
+### Utvidelser
+Sven skulle gjerne sett at det var mulig å gruppere ting som hører sammen under en paraply. F.eks ved turneringer.
+
 #### Utviklerverktøy
 [JSON-formatter til Chrome](https://chrome.google.com/webstore/detail/json-formatter/bcjindcccaagfpapjjmafapmmgkkhgoa?utm_source=chrome-app-launcher-info-dialog)
 
