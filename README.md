@@ -2,7 +2,7 @@
 Applikasjon for workshopen "Java Craftmanship - Renoveringen"
 
 # Utgangspunkt
-En inhouse utvikler har gått banans i repoet og refactorert hele applikasjonen,
+En inhouse utvikler har gått banans i repoet og refaktorert hele applikasjonen,
 han er strålende fornøyd med resultatet men sliter med å få den til å bygge igjen..
 Han er blant annet ganske grønn på maven..
 Kan du hjelpe han?
