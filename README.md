@@ -30,6 +30,7 @@ Applikasjonen skal som et minimum dekke følgende funksjonalitet
 ### Utvidelser
 Sven skulle gjerne sett at det var mulig å gruppere ting som hører sammen under en paraply. F.eks ved turneringer.
 
-#### Utviklerverktøy
+#### Tips & Utviklerverktøy
+**NB!** Har du husket å oppdatere settings.xml slik at du får kontakt med maven central?
 [JSON-formatter til Chrome](https://chrome.google.com/webstore/detail/json-formatter/bcjindcccaagfpapjjmafapmmgkkhgoa?utm_source=chrome-app-launcher-info-dialog)
 
