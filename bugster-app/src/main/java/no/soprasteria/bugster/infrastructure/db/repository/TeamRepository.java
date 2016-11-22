@@ -2,7 +2,6 @@ package no.soprasteria.bugster.infrastructure.db.repository;
 
 import no.soprasteria.bugster.business.team.domain.Team;
 import no.soprasteria.bugster.infrastructure.db.Database;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -35,5 +34,14 @@ public class TeamRepository {
             int insert = database.insert("INSERT INTO TEAM (name) values (?)", team.getName());
             team.setId(insert);
         });
+    }
+
+    public Team validate(List<Team> list, int i) {
+        try {
+            return list.get(i++);
+        } catch (IndexOutOfBoundsException e) {
+            throw new InvalidTeamException();
+        }
+
     }
 }

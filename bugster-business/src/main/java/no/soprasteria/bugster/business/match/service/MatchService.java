@@ -25,8 +25,8 @@ public class MatchService {
     public List<Match> findAllByName(String name) {
         List<Match> byName = repository.findByName(name);
         ArrayList<Match> kamper = new ArrayList<>();
-        for(int i=0; i < byName.size()-1; ++i) {
-            kamper.add(byName.get(i));
+        for(int i=0; i < byName.size()-1; ) {
+            kamper.add(byName.get(++i));
         }
         Collections.sort(kamper);
         return kamper;
