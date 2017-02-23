@@ -14,67 +14,12 @@ import java.util.*;
 public class Database {
 
     private static final Logger log = LoggerFactory.getLogger(Database.class);
-
-    public interface RowMapper<T> {
-        T run(Row row) throws SQLException;
-    }
-
-    public static class Row {
-
-        private final ResultSet rs;
-        private final Map<String, Integer> columnMap = new HashMap<>();
-
-        public Row(ResultSet rs) throws SQLException {
-            this.rs = rs;
-            for (int i = 1; i < rs.getMetaData().getColumnCount() + 1; i++) {
-                String tableName = rs.getMetaData().getTableName(i);
-                String columnName = rs.getMetaData().getColumnName(i);
-
-                this.columnMap.put(tableName + "." + columnName, i);
-            }
-        }
-
-        public String getString(String string) throws SQLException {
-            return rs.getString(string);
-        }
-
-        public int getInt(String columnName) throws SQLException {
-            return rs.getInt(columnName);
-        }
-
-        public Instant getInstant(String columnName) throws SQLException {
-            Timestamp timestamp = rs.getTimestamp(columnName);
-            return timestamp != null ? timestamp.toInstant() : null;
-        }
-
-        public long getLong(String tableName, String columnName) throws SQLException {
-            return rs.getLong(getColumnIndex(tableName, columnName));
-        }
-
-        public String getString(String tableName, String columnName) throws SQLException {
-            return rs.getString(getColumnIndex(tableName, columnName));
-        }
-
-        public boolean getBoolean(String tableName, String columnName) throws SQLException {
-            return rs.getBoolean(getColumnIndex(tableName, columnName));
-        }
-
-        public double getDouble(String tableName, String columnName) throws SQLException {
-            return rs.getDouble(getColumnIndex(tableName, columnName));
-        }
-
-        private int getColumnIndex(String tableName, String columnName) {
-            return columnMap.get(tableName + "." + columnName);
-        }
-    }
-
-    private final DataSource dataSource;
     private final static ThreadLocal<Connection> threadConnection = new ThreadLocal<>();
+    private final DataSource dataSource;
 
     public Database(DataSource dataSource) {
         this.dataSource = dataSource;
     }
-
     public Database(String name) {
         try {
             this.dataSource = (DataSource) new InitialContext().lookup(name);
@@ -92,14 +37,10 @@ public class Database {
      */
     public int insert(String query, Object... parameters) {
         return executeDbOperation(query, Arrays.asList(parameters), stmt -> {
-            try {
-                stmt.executeUpdate();
-                ResultSet rs = stmt.getGeneratedKeys();
-                rs.next();
-                return rs.getInt(1);
-            } catch (Exception e) {
-                return -1;
-            }
+            stmt.executeUpdate();
+            ResultSet rs = stmt.getGeneratedKeys();
+            rs.next();
+            return rs.getInt(1);
         });
     }
 
@@ -182,10 +123,6 @@ public class Database {
         }
     }
 
-    private interface ConnectionCallback<T> {
-        T run(Connection conn) throws SQLException;
-    }
-
     private <T> T doWithConnection(ConnectionCallback<T> object) throws SQLException {
         if (threadConnection.get() != null) {
             return object.run(threadConnection.get());
@@ -194,10 +131,6 @@ public class Database {
         try (Connection conn = dataSource.getConnection()) {
             return object.run(conn);
         }
-    }
-
-    private interface StatementCallback<T> {
-        T run(PreparedStatement stmt) throws SQLException;
     }
 
     private <T> T executeDbOperation(String query, Collection<Object> parameters,
@@ -232,5 +165,66 @@ public class Database {
             throw new RuntimeException("Duplicate");
         }
         return Optional.of(result);
+    }
+
+    public interface RowMapper<T> {
+        T run(Row row) throws SQLException;
+    }
+
+    private interface ConnectionCallback<T> {
+        T run(Connection conn) throws SQLException;
+    }
+
+    private interface StatementCallback<T> {
+        T run(PreparedStatement stmt) throws SQLException;
+    }
+
+    public static class Row {
+
+        private final ResultSet rs;
+        private final Map<String, Integer> columnMap = new HashMap<>();
+
+        public Row(ResultSet rs) throws SQLException {
+            this.rs = rs;
+            for (int i = 1; i < rs.getMetaData().getColumnCount() + 1; i++) {
+                String tableName = rs.getMetaData().getTableName(i);
+                String columnName = rs.getMetaData().getColumnName(i);
+
+                this.columnMap.put(tableName + "." + columnName, i);
+            }
+        }
+
+        public String getString(String string) throws SQLException {
+            return rs.getString(string);
+        }
+
+        public int getInt(String columnName) throws SQLException {
+            return rs.getInt(columnName);
+        }
+
+        public Instant getInstant(String columnName) throws SQLException {
+            Timestamp timestamp = rs.getTimestamp(columnName);
+            return timestamp != null ? timestamp.toInstant() : null;
+        }
+
+        public long getLong(String tableName, String columnName) throws SQLException {
+            return rs.getLong(getColumnIndex(tableName, columnName));
+        }
+
+        public String getString(String tableName, String columnName) throws SQLException {
+            return rs.getString(getColumnIndex(tableName, columnName));
+        }
+
+        public boolean getBoolean(String tableName, String columnName) throws SQLException {
+            return rs.getBoolean(getColumnIndex(tableName, columnName));
+        }
+
+        public double getDouble(String tableName, String columnName) throws SQLException {
+            return rs.getDouble(getColumnIndex(tableName, columnName));
+        }
+
+        private int getColumnIndex(String tableName, String columnName) {
+            return columnMap.get(tableName + "." + columnName);
+        }
     }
 }
