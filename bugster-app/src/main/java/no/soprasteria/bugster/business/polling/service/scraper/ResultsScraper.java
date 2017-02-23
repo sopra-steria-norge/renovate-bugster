@@ -9,13 +9,13 @@ public abstract class ResultsScraper {
 
     private String url;
 
-    public ResultsScraper(String url) {
+    ResultsScraper(String url) {
         this.url = url;
     }
 
     public abstract List<Match> poll();
 
-    public String getUrl() {
+    String getUrl() {
         return url;
     }
 

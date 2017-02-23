@@ -34,7 +34,7 @@ public class Score {
         return away;
     }
 
-    public Result getResult() {
+    Result getResult() {
         if(!isExtraTime() && !isPenalties()) {
             return getResult(home, away);
         } else {
@@ -65,11 +65,11 @@ public class Score {
         }
     }
 
-    public boolean isPenalties() {
+    boolean isPenalties() {
         return (awayPenalties != null && homePenalties != null);
     }
 
-    public boolean isExtraTime() {
+    private boolean isExtraTime() {
         return (getAwayExtraTime() != null && getHomeExtraTime() != null);
     }
 
