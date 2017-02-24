@@ -1,8 +1,7 @@
-package no.soprasteria.bugster.application.scheduling.results;
+package no.soprasteria.bugster.application.job.transactions;
 
 import no.soprasteria.bugster.application.server.AppConfig;
 import no.soprasteria.bugster.business.match.domain.FootballMatch;
-import no.soprasteria.bugster.business.match.domain.HandballMatch;
 import no.soprasteria.bugster.business.match.domain.Match;
 import no.soprasteria.bugster.business.polling.service.scraper.NewVgLiveResultsScraper;
 import no.soprasteria.bugster.business.polling.service.scraper.ResultsScraper;
@@ -14,11 +13,11 @@ import org.quartz.*;
 import java.util.List;
 import java.util.Optional;
 
-public class LiveResultPollerJob implements Job {
+public class TransactionJob implements Job {
 
-    private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(LiveResultPollerJob.class);
+    private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(TransactionJob.class);
 
-    public LiveResultPollerJob() {
+    public TransactionJob() {
     }
 
     @Override
