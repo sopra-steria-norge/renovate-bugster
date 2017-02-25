@@ -2,12 +2,13 @@ package no.soprasteria.bugster.infrastructure.db.repository;
 
 import no.soprasteria.bugster.business.team.domain.Team;
 import no.soprasteria.bugster.infrastructure.db.Database;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
-public class TeamRepository {
+public class TeamRepository implements Repository<Team> {
 
     private final Database database;
 
@@ -15,6 +16,7 @@ public class TeamRepository {
         this.database = database;
     }
 
+    @Override
     public List<Team> list() {
         return database.queryForList("SELECT * FROM TEAM", this::toTeam);
     }
@@ -29,6 +31,7 @@ public class TeamRepository {
         return team;
     }
 
+    @Override
     public void insert(Team team) {
         database.doInTransaction(() -> {
             int insert = database.insert("INSERT INTO TEAM (name) values (?)", team.getName());
@@ -36,9 +39,14 @@ public class TeamRepository {
         });
     }
 
+    @Override
+    public void update(Team update) {
+        throw new NotImplementedException();
+    }
+
     public Team validate(List<Team> list, int i) {
         try {
-            return list.get(i++);
+            return list.get(i);
         } catch (IndexOutOfBoundsException e) {
             throw new InvalidTeamException();
         }

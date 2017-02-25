@@ -6,6 +6,7 @@ import no.soprasteria.bugster.business.match.domain.Match;
 import no.soprasteria.bugster.business.polling.service.scraper.NewVgLiveResultsScraper;
 import no.soprasteria.bugster.business.polling.service.scraper.ResultsScraper;
 import no.soprasteria.bugster.business.team.domain.Team;
+import no.soprasteria.bugster.business.transaction.service.TransactionService;
 import no.soprasteria.bugster.infrastructure.db.repository.MatchRepository;
 import no.soprasteria.bugster.infrastructure.db.repository.TeamRepository;
 import org.quartz.*;
@@ -16,6 +17,8 @@ import java.util.Optional;
 public class TransactionJob implements Job {
 
     private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(TransactionJob.class);
+
+    private TransactionService service = new TransactionService();
 
     public TransactionJob() {
     }
@@ -35,16 +38,9 @@ public class TransactionJob implements Job {
             log.info("Oppretter repositories.");
             MatchRepository matchesRepository = new MatchRepository(config.getDatabase());
             TeamRepository teamRepository = new TeamRepository(config.getDatabase());
-            log.info("Starter polling");
-            ResultsScraper resultsScraper = new NewVgLiveResultsScraper("https://api.vglive.no/v1/vg/events");
-            poll = resultsScraper.poll();
+            log.info("Starter utbetaling");
+
             log.info("Fant {} begivenheter", poll.size());
-            for (Match match : poll) {
-                FootballMatch footballMatch = (FootballMatch) match;
-                findOrCreateTeam(footballMatch.getHomeTeam(), teamRepository);
-                findOrCreateTeam(footballMatch.getAwayTeam(), teamRepository);
-                matchesRepository.insert(footballMatch);
-            }
             log.info("Feridg med polling");
         } catch (Exception e) {
             log.error("Kall mot vglive feiler." + (poll == null ?  "Har jeg internett?" :  poll.get(0).hashCode()), e);
