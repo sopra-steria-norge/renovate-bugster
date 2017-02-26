@@ -5,6 +5,7 @@ import no.soprasteria.bugster.business.match.domain.Match;
 import no.soprasteria.bugster.business.match.domain.Score;
 import no.soprasteria.bugster.business.team.domain.Team;
 import no.soprasteria.bugster.infrastructure.db.Database;
+import org.slf4j.Logger;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.sql.SQLException;
@@ -13,7 +14,7 @@ import java.util.Optional;
 
 public class MatchRepository implements Repository<Match> {
 
-    private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(MatchRepository.class);
+    private static final Logger log = org.slf4j.LoggerFactory.getLogger(MatchRepository.class);
     private final Database database;
 
     public MatchRepository(Database database) {
@@ -29,7 +30,8 @@ public class MatchRepository implements Repository<Match> {
                 "INNER JOIN Score s ON m.score = s.id", this::toFootballMatch);
     }
 
-    public Optional<Match> find(int id) {
+    @Override
+    public Optional<Match> findById(int id) {
         return database.queryForSingle("SELECT m.id ,m.status, m.start_date, ht.name as home_team, at.name as away_team, s.home, s.away, s.id as scoreId, s.home_penalties, s.away_penalties, s.home_extratime, s.away_extratime " +
                 "FROM Match m " +
                 "INNER JOIN Team ht ON m.home_team = ht.id " +

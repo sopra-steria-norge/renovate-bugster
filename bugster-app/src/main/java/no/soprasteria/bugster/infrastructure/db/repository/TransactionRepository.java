@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.List;
+import java.util.Optional;
 
 public class TransactionRepository implements Repository<Transaction> {
 
@@ -16,11 +17,15 @@ public class TransactionRepository implements Repository<Transaction> {
         this.database = database;
     }
 
-
     @Override
     public List<Transaction> list() {
         return database.queryForList("SELECT * " +
                 "FROM Transaction t ", null);
+    }
+
+    @Override
+    public Optional<Transaction> findById(int id) {
+        return database.queryForSingle("SELECT * FROM TRANSACTION WHERE id = ?", id, this::toTransaction);
     }
 
     @Override

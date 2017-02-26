@@ -21,6 +21,11 @@ public class TeamRepository implements Repository<Team> {
         return database.queryForList("SELECT * FROM TEAM", this::toTeam);
     }
 
+    @Override
+    public Optional<Team> findById(int id) {
+        return database.queryForSingle("SELECT * FROM TEAM WHERE id = ?", id, this::toTeam);
+    }
+
     public Optional<Team> findByName(String name) {
         return database.queryForSingle("SELECT * FROM TEAM WHERE name = ?", name, this::toTeam);
     }

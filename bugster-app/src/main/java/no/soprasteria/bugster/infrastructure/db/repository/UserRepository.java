@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.List;
+import java.util.Optional;
 
 public class UserRepository implements Repository<User> {
 
@@ -18,7 +19,12 @@ public class UserRepository implements Repository<User> {
 
     @Override
     public List<User> list() {
-        return database.queryForList("SELECT * FROM User", this::toUser);
+        return database.queryForList("SELECT * FROM USER", this::toUser);
+    }
+
+    @Override
+    public Optional<User> findById(int id) {
+        return database.queryForSingle("SELECT * FROM USER WHERE id = ?", id, this::toUser);
     }
 
     @Override
