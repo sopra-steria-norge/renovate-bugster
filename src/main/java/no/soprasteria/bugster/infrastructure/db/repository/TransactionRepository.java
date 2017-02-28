@@ -3,7 +3,6 @@ package no.soprasteria.bugster.infrastructure.db.repository;
 import no.soprasteria.bugster.business.transaction.domain.Transaction;
 import no.soprasteria.bugster.infrastructure.db.Database;
 import org.slf4j.Logger;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.List;
 import java.util.Optional;
