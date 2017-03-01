@@ -3,7 +3,6 @@ package no.soprasteria.bugster.infrastructure.db.repository;
 import no.soprasteria.bugster.business.user.domain.User;
 import no.soprasteria.bugster.infrastructure.db.Database;
 import org.slf4j.Logger;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.List;
 import java.util.Optional;
@@ -33,7 +32,12 @@ public class UserRepository extends Repository<User> {
 
     @Override
     public void update(User update) {
-        throw new NotImplementedException();
+        database.doInTransaction(() -> {
+            database.executeOperation("UPDATE User " +
+                    "SET username=?, name=?, password=?, balance=? " +
+                    "WHERE id=?", update.getUsername(), update.getName(), update.getPassword(), update.getBalance(), update.getId());
+        });
+
     }
 
     private User toUser(Database.Row row) {

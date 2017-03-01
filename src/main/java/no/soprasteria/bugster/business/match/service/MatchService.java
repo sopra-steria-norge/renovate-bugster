@@ -15,8 +15,12 @@ public class MatchService {
 
     private MatchRepository repository;
 
+    public MatchService(MatchRepository repository) {
+        this.repository = repository;
+    }
+
     public MatchService() {
-        this.repository = (MatchRepository) instantiate(MatchRepository.class);
+        this.repository = instantiate(MatchRepository.class);
     }
 
     public List<Match> findAll() {
