@@ -3,7 +3,6 @@ package no.soprasteria.bugster.application.controller;
 import com.google.gson.Gson;
 import no.soprasteria.bugster.business.team.domain.Team;
 import no.soprasteria.bugster.infrastructure.db.repository.TeamRepository;
-import org.json.JSONArray;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -13,6 +12,8 @@ import javax.ws.rs.core.Response;
 import java.util.List;
 import java.util.Optional;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 @Path("/teams")
 public class TeamController {
 
@@ -20,7 +21,7 @@ public class TeamController {
     private final TeamRepository teamRepository;
 
     public TeamController(TeamRepository teamRepository) {
-
+        checkNotNull(teamRepository);
         this.teamRepository = teamRepository;
     }
 
