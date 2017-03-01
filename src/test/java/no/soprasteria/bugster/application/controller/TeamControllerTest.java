@@ -20,6 +20,24 @@ public class TeamControllerTest extends JerseyTest {
     private static final Database database = new Database(dataSource);
     private static final TeamRepository teamRepository = new TeamRepository(database);
 
+    /*
+        Diskusjonspunkter:
+        Hvordan teste - her kjøres en 'semi'-fullstack-test.
+        Alternativer - full-integrasjon (kjøre opp komplett server)
+        Unit-test (med /uten mocking)
+
+        Fordeler/ulemper
+
+        Ved ekstern-integrasjon - ønsker man å kjøre slike tester som en del av bygget? Ønsker man å ha de i det hele tatt?
+        Kan man på en enkel måte sette opp test der eksterne avhengigheter ikke er i bruk, mens man likevel kjører en fullstack intern test?
+
+        Hva gjør kode enkel å teste - hva gjør den vanskelig. Hvordan er det å refaktorere kode med tester som sjekker 'koden', i.e mock?
+
+        Sikre at vi har noe kode som er fullstendig umulig å teste (gjerne med litt feil), der det er duste-tester og man må refaktorere.
+
+
+     */
+
     @Override
     protected Application configure() {
         migrateSchemas();
