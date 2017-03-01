@@ -18,7 +18,7 @@ import javax.ws.rs.core.Response;
 import java.util.List;
 import java.util.Optional;
 
-@Path("/team")
+@Path("/bets")
 public class BetsController {
 
     private Gson gson = new Gson();

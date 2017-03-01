@@ -45,13 +45,14 @@ public abstract class AppConfigFile {
         dataSource.setJdbcUrl(databaseUrl);
         dataSource.setUsername(matcher1.group(2));
         dataSource.setPassword(matcher1.group(3));
+
+        log.info("Using datasource: {}", databaseUrl);
         return dataSource;
     }
 
     protected DataSource createDataSource(String prefix) {
         DataSource dataSource = createDataSource(prefix, prefix);
-        migrateDataSource(prefix, dataSource);
-        return dataSource;
+        return migrateDataSource(prefix, dataSource);
     }
 
     protected DataSource migrateDataSource(String prefix, DataSource dataSource) {
@@ -80,9 +81,10 @@ public abstract class AppConfigFile {
     private DataSource createDataSource(String prefix, String defaultName) {
         HikariDataSource dataSource = new HikariDataSource();
         dataSource.setUsername(getProperty(prefix + ".db.username", defaultName));
-        dataSource.setPassword(getProperty(prefix + ".db.password", dataSource.getUsername()));
+//        dataSource.setPassword(getProperty(prefix + ".db.password", dataSource.getUsername()));
         dataSource.setJdbcUrl(
                 getProperty(prefix + ".db.url", "jdbc:postgresql://localhost:5432/" + dataSource.getUsername()));
+        log.info("JDBC Url: {}", dataSource.getJdbcUrl());
         return dataSource;
     }
 

@@ -18,7 +18,7 @@ import javax.ws.rs.core.Response;
 import java.util.List;
 import java.util.Optional;
 
-@Path("/team")
+@Path("/trans")
 public class TransactionController {
 
     private Gson gson = new Gson();

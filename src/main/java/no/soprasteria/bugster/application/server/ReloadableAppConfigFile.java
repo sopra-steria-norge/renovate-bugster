@@ -31,10 +31,10 @@ public class ReloadableAppConfigFile extends AppConfigFile implements AppConfig 
     }
 
     protected DataSource createDataSource() {
-        if (System.getenv("DATABASE_URL") != null) {
-            return migrateDataSource("seed", createDataSourceFromEnv(System.getenv("DATABASE_URL")));
-        }
-        return createDataSource("seed");
+//        if (System.getenv("DATABASE_URL") != null) {
+//            return migrateDataSource("seed", createDataSourceFromEnv(System.getenv("DATABASE_URL")));
+//        }
+        return super.createDataSource("seed");
     }
 
     @Override

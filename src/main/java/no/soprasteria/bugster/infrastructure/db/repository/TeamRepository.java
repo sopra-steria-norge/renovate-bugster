@@ -8,18 +8,17 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
-public class TeamRepository extends Repository<Team> {
+public class TeamRepository {
+    private final Database database;
 
-    TeamRepository() {
-        super();
+    public TeamRepository(Database database){
+        this.database = database;
     }
 
-    @Override
     public List<Team> list() {
         return database.queryForList("SELECT * FROM TEAM", this::toTeam);
     }
 
-    @Override
     public Optional<Team> findById(int id) {
         return database.queryForSingle("SELECT * FROM TEAM WHERE id = ?", id, this::toTeam);
     }
@@ -34,17 +33,11 @@ public class TeamRepository extends Repository<Team> {
         return team;
     }
 
-    @Override
     public void insert(Team team) {
         database.doInTransaction(() -> {
             int insert = database.insert("INSERT INTO TEAM (name) values (?)", team.getName());
             team.setId(insert);
         });
-    }
-
-    @Override
-    public void update(Team update) {
-        throw new NotImplementedException();
     }
 
     public Team validate(List<Team> list, int i) {
