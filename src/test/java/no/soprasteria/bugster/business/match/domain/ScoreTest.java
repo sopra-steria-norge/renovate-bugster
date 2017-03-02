@@ -9,9 +9,9 @@ public class ScoreTest {
 
     @Test
     public void testGetResult() throws Exception {
-        assertThat(new Score(1, 0).getResult()).isEqualTo(Score.Result.H);
-        assertThat(new Score(1, 1).getResult()).isEqualTo(Score.Result.U);
-        assertThat(new Score(1, 2).getResult()).isEqualTo(Score.Result.B);
+        assertThat(new Score(1, 0).getResult()).isEqualTo(Result.H);
+        assertThat(new Score(1, 1).getResult()).isEqualTo(Result.U);
+        assertThat(new Score(1, 2).getResult()).isEqualTo(Result.B);
     }
 
     @Test(expected = IllegalArgumentException.class)

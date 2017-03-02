@@ -45,9 +45,6 @@ public class Score {
         this.id = id;
     }
 
-    enum Result {
-        H,U,B
-    }
 
     @Override
     public boolean equals(Object o) {

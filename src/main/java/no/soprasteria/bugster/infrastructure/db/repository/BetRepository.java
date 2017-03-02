@@ -18,8 +18,13 @@ public class BetRepository extends Repository<Bet> {
     }
 
     @Override
-    public void insert(Bet insert) {
-
+    public void insert(Bet bet) {
+//        database.doInTransaction(() -> {
+//            int betId = database.insert("insert into bet (matchId, result) values (?, ?)"
+//                    ,bet.getMatchId()
+//                    ,bet.getBettedResult());
+//            bet.setId(betId);
+//        });
     }
 
     @Override

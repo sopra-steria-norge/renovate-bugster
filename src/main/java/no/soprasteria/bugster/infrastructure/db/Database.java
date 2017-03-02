@@ -104,7 +104,6 @@ public class Database {
      * Create a transaction for multiple database operations like
      * {@link #insert(String, Object...) insert},
      * {@link #queryForList(String, RowMapper, Object...) queryForList},
-     * {@link #queryForSingle(String, RowMapper, Object...) queryForSingle} or
      * {@link #executeOperation(String, Object...) executeOperation}
      *
      * @param operation is a functional interface to allow transaction to run in a
@@ -207,8 +206,8 @@ public class Database {
             return timestamp != null ? timestamp.toInstant() : null;
         }
 
-        public long getLong(String tableName, String columnName) throws SQLException {
-            return rs.getLong(getColumnIndex(tableName, columnName));
+        public long getLong(String columnName) throws SQLException {
+            return rs.getLong(columnName);
         }
 
         public String getString(String tableName, String columnName) throws SQLException {
@@ -219,8 +218,8 @@ public class Database {
             return rs.getBoolean(getColumnIndex(tableName, columnName));
         }
 
-        public double getDouble(String tableName, String columnName) throws SQLException {
-            return rs.getDouble(getColumnIndex(tableName, columnName));
+        public double getDouble(String columnName) throws SQLException {
+            return rs.getDouble(columnName);
         }
 
         private int getColumnIndex(String tableName, String columnName) {

@@ -91,12 +91,6 @@ public class MatchControllerTest extends JerseyTest {
         return "["+index+"]."+path;
     }
 
-    private void verify(JsonPath matchPath, Match match) {
-        assertThat(matchPath.getInt("id")).isEqualTo(match.getId());
-    }
-
-
-
     private void migrateSchemas() {
         Flyway flyway = new Flyway();
         flyway.setDataSource(dataSource);
