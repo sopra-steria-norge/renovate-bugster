@@ -18,12 +18,12 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NewVgLiveResultsScraper extends ResultsScraper {
+public class VgLiveResultsScraper extends ResultsScraper {
 
-    private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(NewVgLiveResultsScraper.class);
+    private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(VgLiveResultsScraper.class);
     private Gson gson = new Gson();
 
-    public NewVgLiveResultsScraper(String url) {
+    public VgLiveResultsScraper(String url) {
         super(url);
     }
 
@@ -69,10 +69,6 @@ public class NewVgLiveResultsScraper extends ResultsScraper {
                 ParticipantScore homeTeamScore = getScoreByTeamId(event.getParticipants()[0], apiResult.getScores());
                 ParticipantScore awayTeamScore = getScoreByTeamId(event.getParticipants()[1], apiResult.getScores());
                 no.soprasteria.bugster.business.match.domain.Score score = new no.soprasteria.bugster.business.match.domain.Score(homeTeamScore.getOrdinaryTime(), awayTeamScore.getOrdinaryTime());
-                score.setHomeExtraTime(homeTeamScore.getExtraTime());
-                score.setAwayExtraTime(awayTeamScore.getExtraTime());
-                score.setHomePenalties(homeTeamScore.getPenaltyShootout());
-                score.setAwayPenalties(awayTeamScore.getPenaltyShootout());
 
                 match = new FootballMatch(homeTeam, awayTeam, score, event.getStatus().getType(), event.getStartDate());
                 matches.add(match);

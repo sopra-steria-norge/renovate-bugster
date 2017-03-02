@@ -6,9 +6,6 @@ import no.soprasteria.bugster.application.server.ReloadableAppConfigFile;
 import no.soprasteria.bugster.business.match.domain.Match;
 import no.soprasteria.bugster.business.match.service.MatchService;
 import no.soprasteria.bugster.business.team.domain.Team;
-import no.soprasteria.bugster.business.team.service.TeamService;
-import no.soprasteria.bugster.infrastructure.db.repository.MatchRepository;
-import no.soprasteria.bugster.infrastructure.db.repository.TeamRepository;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -22,7 +19,6 @@ import java.util.Optional;
 public class BetsController {
 
     private Gson gson = new Gson();
-    private TeamService teamService;
     private MatchService matchService;
 
     public BetsController() {
@@ -34,30 +30,31 @@ public class BetsController {
     @GET
     @Produces("application/json")
     public Response list() {
-        List<Team> teams = teamService.findAll();
-        return Response.status(200).entity(gson.toJson(teams)).build();
+        return null;
+//        List<Team> teams = teamService.findAll();
+//        return Response.status(200).entity(gson.toJson(teams)).build();
     }
 
-    @GET
-    @Produces("application/json")
-    @Path("/search/name/{name}")
-    public Response findByName(@PathParam("name") String name) {
-        Optional<Team> team = teamService.findByName(name);
-        if(team.isPresent()) {
-            return Response.status(200).entity(gson.toJson(team)).build();
-        }
-        return Response.status(400).build();
-    }
-
-    @GET
-    @Produces("application/json")
-    @Path("/results/{name}")
-    public Response resultsByName(@PathParam("name") String name) {
-        Optional<Team> team = teamService.findByName(name);
-        if(team.isPresent()) {
-            List<Match> byName = matchService.findAllByName(team.get().getName());
-            Response.status(200).entity(gson.toJson(byName)).build();
-        }
-        return Response.status(400).build();
-    }
+//    @GET
+//    @Produces("application/json")
+//    @Path("/search/name/{name}")
+//    public Response findByName(@PathParam("name") String name) {
+//        Optional<Team> team = teamService.findByName(name);
+//        if(team.isPresent()) {
+//            return Response.status(200).entity(gson.toJson(team)).build();
+//        }
+//        return Response.status(400).build();
+//    }
+//
+//    @GET
+//    @Produces("application/json")
+//    @Path("/results/{name}")
+//    public Response resultsByName(@PathParam("name") String name) {
+//        Optional<Team> team = teamService.findByName(name);
+//        if(team.isPresent()) {
+//            List<Match> byName = matchService.findAllByName(team.get().getName());
+//            Response.status(200).entity(gson.toJson(byName)).build();
+//        }
+//        return Response.status(400).build();
+//    }
 }

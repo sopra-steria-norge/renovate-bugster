@@ -4,15 +4,11 @@ import no.soprasteria.bugster.application.server.AppConfig;
 import no.soprasteria.bugster.application.server.ReloadableAppConfigFile;
 import no.soprasteria.bugster.business.match.domain.FootballMatch;
 import no.soprasteria.bugster.business.match.domain.Match;
-import no.soprasteria.bugster.business.polling.service.scraper.NewVgLiveResultsScraper;
+import no.soprasteria.bugster.business.polling.service.scraper.VgLiveResultsScraper;
 import no.soprasteria.bugster.business.polling.service.scraper.ResultsScraper;
-import no.soprasteria.bugster.business.team.domain.Team;
-import no.soprasteria.bugster.infrastructure.db.repository.MatchRepository;
-import no.soprasteria.bugster.infrastructure.db.repository.TeamRepository;
 import org.quartz.*;
 
 import java.util.List;
-import java.util.Optional;
 
 public class LiveResultPollerJob implements Job {
 
@@ -31,7 +27,7 @@ public class LiveResultPollerJob implements Job {
 //            MatchRepository matchesRepository = new MatchRepository(config.getDatabase());
 //            TeamRepository teamRepository = new TeamRepository(config.getDatabase());
             log.info("Starter polling");
-            ResultsScraper resultsScraper = new NewVgLiveResultsScraper("https://api.vglive.no/v1/vg/events");
+            ResultsScraper resultsScraper = new VgLiveResultsScraper("https://api.vglive.no/v1/vg/events");
             poll = resultsScraper.poll();
             log.info("Fant {} begivenheter", poll.size());
             for (Match match : poll) {
@@ -46,12 +42,12 @@ public class LiveResultPollerJob implements Job {
         }
     }
 
-    private void findOrCreateTeam(Team team, TeamRepository repository) {
-        Optional<Team> teamFromRepo = repository.findByName(team.getName());
-        if(!teamFromRepo.isPresent()) {
-            repository.insert(team);
-            return;
-        }
-        team.setId(teamFromRepo.get().getId());
-    }
+//    private void findOrCreateTeam(Team team, TeamRepository repository) {
+//        Optional<Team> teamFromRepo = repository.findByName(team.getName());
+//        if(!teamFromRepo.isPresent()) {
+//            repository.insert(team);
+//            return;
+//        }
+//        team.setId(teamFromRepo.get().getId());
+//    }
 }
