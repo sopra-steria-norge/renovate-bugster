@@ -61,9 +61,9 @@ public class MatchRepository extends Repository<Match> {
         FootballMatch match = (FootballMatch) insert;
         database.doInTransaction(() -> {
             Score score = match.getScore();
-            int scoreId = database.insert("insert into score (home, away, home_extratime, away_extratime, home_penalties, away_penalties) values (?, ?, ?, ?)", score.getHome(), score.getAway(), score.getHomeExtraTime(), score.getAwayExtraTime(), score.getHomePenalties(), score.getAwayPenalties());
+            int scoreId = database.insert("insert into score (home, away, home_extratime, away_extratime, home_penalties, away_penalties) values (?, ?, ?, ?, ?, ?)", score.getHome(), score.getAway(), score.getHomeExtraTime(), score.getAwayExtraTime(), score.getHomePenalties(), score.getAwayPenalties());
             score.setId(scoreId);
-            int matchId = database.insert("INSERT INTO match (home_team, away_team, score, start_date, status) VALUES (?, ?, ?, ?)", match.getHomeTeam().getId(), match.getAwayTeam().getId(), scoreId, match.getStartDate(), match.getStatus());
+            int matchId = database.insert("INSERT INTO match (home_team, away_team, score, start_date, status) VALUES (?, ?, ?, ?, ?)", match.getHomeTeam().getId(), match.getAwayTeam().getId(), scoreId, match.getStartDate(), match.getStatus());
             match.setId(matchId);
         });
     }
