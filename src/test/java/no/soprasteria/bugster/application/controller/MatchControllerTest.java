@@ -1,22 +1,28 @@
 package no.soprasteria.bugster.application.controller;
 
 import io.restassured.path.json.JsonPath;
+import no.soprasteria.bugster.application.server.AppConfig;
+import no.soprasteria.bugster.application.server.ReloadableAppConfigFile;
 import no.soprasteria.bugster.business.match.domain.FootballMatch;
 import no.soprasteria.bugster.business.match.domain.Match;
 import no.soprasteria.bugster.business.match.domain.Score;
 import no.soprasteria.bugster.business.team.domain.Team;
 import no.soprasteria.bugster.infrastructure.db.Database;
 import no.soprasteria.bugster.infrastructure.db.repository.MatchRepository;
+import no.soprasteria.bugster.infrastructure.db.repository.RepositoryLocator;
 import no.soprasteria.bugster.infrastructure.db.repository.TestDatasource;
 import org.flywaydb.core.Flyway;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.JerseyTest;
+import org.junit.Before;
 import org.junit.Test;
+import org.mockito.internal.util.reflection.Whitebox;
 
 import javax.sql.DataSource;
 import javax.ws.rs.core.Application;
 import javax.ws.rs.core.Response;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -44,11 +50,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class MatchControllerTest extends JerseyTest {
     private static final DataSource dataSource = TestDatasource.get();
     private static final Database database = new Database(dataSource);
-    private static MatchRepository matchRepository = new MatchRepository(database);
+    private static MatchRepository matchRepository;
 
     @Override
     protected Application configure() {
         migrateSchemas();
+        AppConfig instance = ReloadableAppConfigFile.getInstance();
+        Whitebox.setInternalState(instance, "database", database);
+        matchRepository = RepositoryLocator.instantiate(MatchRepository.class);
         return initApplication();
     }
 
@@ -59,13 +68,13 @@ public class MatchControllerTest extends JerseyTest {
                 new Team("IK Start"),
                 new Score(0, 3),
                 "completed",
-                LocalDate.now().format(DateTimeFormatter.BASIC_ISO_DATE));
+                LocalDateTime.now());
         Match match2 = new FootballMatch(
                 new Team("Manchester United"),
                 new Team("Arsenal"),
                 new Score(2, 0),
                 "completed",
-                LocalDate.now().format(DateTimeFormatter.BASIC_ISO_DATE));
+                LocalDateTime.now());
         matchRepository.insert(match);
         matchRepository.insert(match2);
 
