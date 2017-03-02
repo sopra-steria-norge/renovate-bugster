@@ -20,7 +20,6 @@ public class MatchService {
     }
 
     public MatchService() {
-        this.repository = instantiate(MatchRepository.class);
     }
 
     public List<Match> findAll() {

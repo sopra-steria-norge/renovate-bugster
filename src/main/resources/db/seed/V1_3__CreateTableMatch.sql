@@ -1,7 +1,7 @@
 create table Match (
   id SERIAL PRIMARY KEY,
-  home_team SERIAL REFERENCES Team(id),
-  away_team SERIAL REFERENCES Team(id),
+  home_team VARCHAR(100) NOT NULL,
+  away_team VARCHAR(100) NOT NULL,
   score SERIAL REFERENCES Score(id),
   status VARCHAR2(20) NOT NULL,
   start_date VARCHAR2(50) NOT NULL,

@@ -1,25 +1,28 @@
 package no.soprasteria.bugster.infrastructure.db.repository;
 
+import jersey.repackaged.com.google.common.base.Preconditions;
 import no.soprasteria.bugster.business.match.domain.FootballMatch;
 import no.soprasteria.bugster.business.match.domain.Match;
 import no.soprasteria.bugster.business.match.domain.Score;
 import no.soprasteria.bugster.business.team.domain.Team;
 import no.soprasteria.bugster.infrastructure.db.Database;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
-public class MatchRepository extends Repository<Match> {
+public class MatchRepository {
 
-    private static final Logger log = org.slf4j.LoggerFactory.getLogger(MatchRepository.class);
+    private static final Logger log = LoggerFactory.getLogger(MatchRepository.class);
+    private final Database database;
 
-    MatchRepository() {
-        super();
+    public MatchRepository(Database database) {
+        Preconditions.checkNotNull(database);
+        this.database = database;
     }
 
-    @Override
     public List<Match> list() {
         return database.queryForList("SELECT m.id ,m.status, m.start_date, ht.name as home_team, at.name as away_team, s.home, s.away, s.id as scoreId, s.home_penalties, s.away_penalties, s.home_extratime, s.away_extratime " +
                 "FROM Match m " +
@@ -28,7 +31,6 @@ public class MatchRepository extends Repository<Match> {
                 "INNER JOIN Score s ON m.score = s.id", this::toFootballMatch);
     }
 
-    @Override
     public Optional<Match> findById(int id) {
         return database.queryForSingle("SELECT m.id ,m.status, m.start_date, ht.name as home_team, at.name as away_team, s.home, s.away, s.id as scoreId, s.home_penalties, s.away_penalties, s.home_extratime, s.away_extratime " +
                 "FROM Match m " +
@@ -56,7 +58,6 @@ public class MatchRepository extends Repository<Match> {
                 "WHERE start_date LIKE ?", this::toFootballMatch, "%" + date + "%");
     }
 
-    @Override
     public void insert(Match insert) {
         FootballMatch match = (FootballMatch) insert;
         database.doInTransaction(() -> {
@@ -68,7 +69,6 @@ public class MatchRepository extends Repository<Match> {
         });
     }
 
-    @Override
     public void update(Match match) {
         throw new NotImplementedException();
     }

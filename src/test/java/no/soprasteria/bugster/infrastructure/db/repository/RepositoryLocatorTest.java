@@ -17,13 +17,13 @@ public class RepositoryLocatorTest {
         Whitebox.setInternalState(instance, "database", mock);
     }
 
-    @Test
-    public void matchRepository() throws Exception {
-        Repository repository = RepositoryLocator.instantiate(MatchRepository.class);
-
-        assertThat(repository).isInstanceOf(Repository.class);
-        assertThat(repository).isInstanceOf(MatchRepository.class);
-    }
+//    @Test
+//    public void matchRepository() throws Exception {
+//        Repository repository = RepositoryLocator.instantiate(MatchRepository.class);
+//
+//        assertThat(repository).isInstanceOf(Repository.class);
+//        assertThat(repository).isInstanceOf(MatchRepository.class);
+//    }
 
     @Test
     public void userRepository() throws Exception {

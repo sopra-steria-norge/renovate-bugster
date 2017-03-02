@@ -33,8 +33,7 @@ public class BetsController {
 
     @GET
     @Produces("application/json")
-    @Path("/all")
-    public Response all() {
+    public Response list() {
         List<Team> teams = teamService.findAll();
         return Response.status(200).entity(gson.toJson(teams)).build();
     }

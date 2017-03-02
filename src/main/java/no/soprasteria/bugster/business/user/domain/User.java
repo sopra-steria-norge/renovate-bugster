@@ -1,6 +1,6 @@
 package no.soprasteria.bugster.business.user.domain;
 
-import no.soprasteria.bugster.business.bet.domain.UserBet;
+import no.soprasteria.bugster.business.bet.domain.Bet;
 import no.soprasteria.bugster.business.transaction.domain.Transaction;
 
 import java.util.Collections;
@@ -13,7 +13,7 @@ public class User {
     private String name;
     private String password;
     private List<Transaction> transactions;
-    private List<UserBet> bets;
+    private List<Bet> bets;
     private long balance;
 
     public User(String username, String name, String password) {
@@ -26,7 +26,7 @@ public class User {
         this.balance = 0;
     }
 
-    public User(long id, String username, String name, String password, List<Transaction> transactions, List<UserBet> bets, long balance) {
+    public User(long id, String username, String name, String password, List<Transaction> transactions, List<Bet> bets, long balance) {
         this.id = id;
         this.username = username;
         this.name = name;
@@ -52,11 +52,11 @@ public class User {
         this.transactions = transactions;
     }
 
-    public List<UserBet> getBets() {
+    public List<Bet> getBets() {
         return bets;
     }
 
-    public void setBets(List<UserBet> bets) {
+    public void setBets(List<Bet> bets) {
         this.bets = bets;
     }
 

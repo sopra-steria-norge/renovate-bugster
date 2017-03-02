@@ -35,7 +35,8 @@ public class TeamControllerTest extends JerseyTest {
 
         Sikre at vi har noe kode som er fullstendig umulig å teste (gjerne med litt feil), der det er duste-tester og man må refaktorere.
 
-
+        Transaksjoner i tester - sikre frikobling. Hvordan er dette her? Er det tilfeldig? (mem) Hva skjer når neste test kommmer med litt
+        inserts?
      */
 
     @Override

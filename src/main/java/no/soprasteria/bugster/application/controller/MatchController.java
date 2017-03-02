@@ -15,7 +15,7 @@ import javax.ws.rs.core.Response;
 import java.util.List;
 import java.util.Optional;
 
-@Path("/match")
+@Path("/matches")
 public class MatchController {
 
     private MatchService matchService;
