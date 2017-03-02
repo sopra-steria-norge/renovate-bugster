@@ -9,6 +9,8 @@ import no.soprasteria.bugster.business.team.domain.Team;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,6 +50,6 @@ public class ResultServiceTest {
     }
 
     private Match createMatch(MatchStatus matchStatus) {
-        return new FootballMatch(new Team("VIF"), new Team("LSK"), new Score(1, 1), matchStatus.getCssClass(), "");
+        return new FootballMatch(new Team("VIF"), new Team("LSK"), new Score(1, 1), matchStatus.getCssClass(), LocalDateTime.now());
     }
 }

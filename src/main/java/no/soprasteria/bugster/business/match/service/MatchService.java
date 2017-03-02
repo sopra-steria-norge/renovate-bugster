@@ -23,9 +23,7 @@ public class MatchService {
     }
 
     public List<Match> findAll() {
-        List<Match> list = repository.list();
-        Collections.sort(list);
-        return list;
+        return repository.list();
     }
 
     public List<Match> findAllByName(String name) {

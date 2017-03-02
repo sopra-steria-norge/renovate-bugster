@@ -15,4 +15,4 @@ hs_err_pid*
 /logs/
 /logging-simpleserverseed.xml
 /seedapp.properties
-*/target/*
+/target
