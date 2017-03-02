@@ -38,24 +38,6 @@ public class MatchRepository {
                 "WHERE m.id = ?", id, this::toFootballMatch);
     }
 
-    public List<Match> findByName(String name) {
-        return database.queryForList("SELECT m.id, m.status, m.start_date, ht.name as home_team, at.name as away_team, s.home, s.away, s.id as scoreId, s.home_penalties, s.away_penalties, s.home_extratime, s.away_extratime " +
-                "FROM Match m " +
-                "INNER JOIN Team ht ON m.home_team = ht.id " +
-                "INNER JOIN Team at ON m.away_team = at.id " +
-                "INNER JOIN Score s ON m.score = s.id" +
-                "WHERE ht.name = ? OR at.name = ?", this::toFootballMatch, name, name);
-    }
-
-    public List<Match> findByDate(String date) {
-        return database.queryForList("SELECT m.id ,m.status, m.start_date, ht.name as home_team, at.name as away_team, s.home, s.away, s.id as scoreId, s.home_penalties, s.away_penalties, s.home_extratime, s.away_extratime " +
-                "FROM Match m " +
-                "INNER JOIN Team ht ON m.home_team = ht.id " +
-                "INNER JOIN Team at ON m.away_team = at.id " +
-                "INNER JOIN Score s ON m.score = s.id" +
-                "WHERE start_date LIKE ?", this::toFootballMatch, "%" + date + "%");
-    }
-
     public void insert(Match insert) {
         FootballMatch match = (FootballMatch) insert;
         database.doInTransaction(() -> {
@@ -68,7 +50,15 @@ public class MatchRepository {
     }
 
     public void update(Match match) {
-        throw new NotImplementedException();
+        database.doInTransaction(() -> {
+            Score score = match.getScore();
+            Optional<Integer> id = database.queryForSingle("select score from match where id =?", match.getId(), r -> r.getInt("score"));
+            if(!id.isPresent()){
+                throw new IllegalArgumentException("Noe gikk galt... ");
+            }else{
+                database.executeOperation("update score set home = ?, away = ? where id = ?", score.getHome(), score.getAway(), id.get());
+            }
+        });
     }
 
     private Match toFootballMatch(Database.Row row) throws SQLException {

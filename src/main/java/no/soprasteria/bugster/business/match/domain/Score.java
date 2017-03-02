@@ -60,4 +60,12 @@ public class Score {
     public int hashCode() {
         return Objects.hashCode(id, home, away);
     }
+
+    public void setAway(int away) {
+        this.away = away;
+    }
+
+    public void setHome(int home) {
+        this.home = home;
+    }
 }

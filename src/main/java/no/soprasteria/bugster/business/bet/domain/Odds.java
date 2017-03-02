@@ -2,6 +2,8 @@ package no.soprasteria.bugster.business.bet.domain;
 
 import no.soprasteria.bugster.business.match.domain.Result;
 
+import java.time.LocalDateTime;
+
 public class Odds {
     private Integer id;
     private Double value;
@@ -32,5 +34,9 @@ public class Odds {
 
     public Result getResult() {
         return result;
+    }
+
+    public LocalDateTime getTimestampedAt() {
+        return LocalDateTime.now();
     }
 }

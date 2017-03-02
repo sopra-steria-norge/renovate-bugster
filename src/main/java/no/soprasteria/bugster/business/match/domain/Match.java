@@ -18,5 +18,5 @@ public interface Match extends Comparable<Match> {
 
     Score getScore();
 
-    void setScore(Score score);
+    void updateScore(Score score);
 }

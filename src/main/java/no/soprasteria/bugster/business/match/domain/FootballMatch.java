@@ -48,8 +48,9 @@ public class FootballMatch implements Match {
     }
 
     @Override
-    public void setScore(Score score) {
-        this.score = score;
+    public void updateScore(Score score) {
+        this.score.setHome(score.getHome());
+        this.score.setAway(score.getAway());
     }
 
     public String getStatus() {

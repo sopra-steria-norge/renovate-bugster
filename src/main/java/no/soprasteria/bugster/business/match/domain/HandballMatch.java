@@ -44,9 +44,10 @@ public class HandballMatch implements Match {
     }
 
     @Override
-    public void setScore(Score score) {
-        this.score = score;
+    public void updateScore(Score score) {
+        throw new UnsupportedOperationException();
     }
+
 
     public Integer getId() {
         return id;

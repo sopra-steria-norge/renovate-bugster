@@ -26,13 +26,13 @@ public class MatchServiceTest {
         assertThat(!allMatches.isEmpty());
     }
 
-    @Test
-    public void should_find_all_matchesWithLeeds() throws Exception {
-        MatchRepository repository = mock(MatchRepository.class);
-        List<Match> footballMatches = Arrays.asList(new FootballMatch(new Team("Leeds"), new Team("Leeds"), new Score(1, 1), "", ""), new FootballMatch(new Team("Leeds"), new Team("Leeds"), new Score(1, 1), "", ""), new FootballMatch(new Team("Leeds"), new Team("Leeds"), new Score(1, 1), "", ""), new FootballMatch(new Team("Leeds"), new Team("Leeds"), new Score(1, 1), "", ""));
-        when(repository.findByName("Leeds")).thenReturn(footballMatches);
-        List<Match> allMatches = new MatchService(repository).findAllByName("Leeds");
-
-        assertThat(!allMatches.isEmpty());
-    }
+//    @Test
+//    public void should_find_all_matchesWithLeeds() throws Exception {
+//        MatchRepository repository = mock(MatchRepository.class);
+//        List<Match> footballMatches = Arrays.asList(new FootballMatch(new Team("Leeds"), new Team("Leeds"), new Score(1, 1), "", ""), new FootballMatch(new Team("Leeds"), new Team("Leeds"), new Score(1, 1), "", ""), new FootballMatch(new Team("Leeds"), new Team("Leeds"), new Score(1, 1), "", ""), new FootballMatch(new Team("Leeds"), new Team("Leeds"), new Score(1, 1), "", ""));
+//        when(repository.findByName("Leeds")).thenReturn(footballMatches);
+//        List<Match> allMatches = new MatchService(repository).findAllByName("Leeds");
+//
+//        assertThat(!allMatches.isEmpty());
+//    }
 }
