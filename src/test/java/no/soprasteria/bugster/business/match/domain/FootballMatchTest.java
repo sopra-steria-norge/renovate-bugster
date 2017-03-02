@@ -3,6 +3,7 @@ package no.soprasteria.bugster.business.match.domain;
 import no.soprasteria.bugster.business.team.domain.Team;
 import org.junit.Test;
 
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 
@@ -17,10 +18,10 @@ public class FootballMatchTest {
         Team vif = new Team("VIF");
         Team rbk = new Team("RBK");
         Team til = new Team("TIL");
-        Match match1 = new FootballMatch(vif, rbk, new Score(0, 0), FINISHED.getCssClass(), "");
-        Match match2 = new FootballMatch(rbk, vif, new Score(0, 0), FINISHED.getCssClass(), "");
-        Match match3 = new FootballMatch(til, vif, new Score(0, 0), FINISHED.getCssClass(), "");
-        Match match4 = new FootballMatch(rbk, til, new Score(0, 0), FINISHED.getCssClass(), "");
+        Match match1 = new FootballMatch(vif, rbk, new Score(0, 0), FINISHED.getCssClass(), LocalDateTime.now());
+        Match match2 = new FootballMatch(rbk, vif, new Score(0, 0), FINISHED.getCssClass(), LocalDateTime.now());
+        Match match3 = new FootballMatch(til, vif, new Score(0, 0), FINISHED.getCssClass(), LocalDateTime.now());
+        Match match4 = new FootballMatch(rbk, til, new Score(0, 0), FINISHED.getCssClass(), LocalDateTime.now());
 
         List<Match> matches = asList(match1, match2, match3, match4);
         Collections.sort(matches);

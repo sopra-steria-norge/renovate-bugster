@@ -15,6 +15,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -70,7 +73,7 @@ public class VgLiveResultsScraper extends ResultsScraper {
                 ParticipantScore awayTeamScore = getScoreByTeamId(event.getParticipants()[1], apiResult.getScores());
                 no.soprasteria.bugster.business.match.domain.Score score = new no.soprasteria.bugster.business.match.domain.Score(homeTeamScore.getOrdinaryTime(), awayTeamScore.getOrdinaryTime());
 
-                match = new FootballMatch(homeTeam, awayTeam, score, event.getStatus().getType(), event.getStartDate());
+                match = new FootballMatch(homeTeam, awayTeam, score, event.getStatus().getType(), LocalDateTime.ofInstant(Instant.parse(event.getStartDate()), ZoneId.of("CET")));
                 matches.add(match);
                 log.info(match.toString());
             } catch (Exception e) {

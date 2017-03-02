@@ -19,9 +19,7 @@ public class MatchService {
     }
 
     public List<Match> findAll() {
-        List<Match> list = repository.list();
-        Collections.sort(list);
-        return list;
+        return repository.list();
     }
 
     public Optional<Match> findById(int id) {

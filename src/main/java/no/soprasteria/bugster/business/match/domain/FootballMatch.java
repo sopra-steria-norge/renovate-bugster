@@ -3,6 +3,9 @@ package no.soprasteria.bugster.business.match.domain;
 
 import no.soprasteria.bugster.business.team.domain.Team;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.Objects;
 
 public class FootballMatch implements Match {
@@ -12,9 +15,9 @@ public class FootballMatch implements Match {
     private Team awayTeam;
     private Score score;
     private String status;
-    private String startDate;
+    private LocalDateTime startDate;
 
-    public FootballMatch(Team homeTeam, Team awayTeam, Score score, String status, String startDate) {
+    public FootballMatch(Team homeTeam, Team awayTeam, Score score, String status, LocalDateTime startDate) {
         this.homeTeam = homeTeam;
         this.awayTeam = awayTeam;
         this.status = status;
@@ -69,11 +72,11 @@ public class FootballMatch implements Match {
         this.id = id;
     }
 
-    public String getStartDate() {
+    public LocalDateTime getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(String startDate) {
+    public void setStartDate(LocalDateTime startDate) {
         this.startDate = startDate;
     }
 

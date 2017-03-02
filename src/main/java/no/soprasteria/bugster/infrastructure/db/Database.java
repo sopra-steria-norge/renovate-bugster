@@ -10,11 +10,13 @@ import javax.sql.DataSource;
 import java.sql.*;
 import java.time.Instant;
 import java.util.*;
+import java.util.Date;
 
 public class Database {
 
     private static final Logger log = LoggerFactory.getLogger(Database.class);
     private final static ThreadLocal<Connection> threadConnection = new ThreadLocal<>();
+    private static final Calendar tzUTC = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
     private final DataSource dataSource;
 
     public Database(DataSource dataSource) {

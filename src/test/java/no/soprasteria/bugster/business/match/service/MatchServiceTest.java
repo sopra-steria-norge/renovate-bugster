@@ -7,6 +7,7 @@ import no.soprasteria.bugster.business.team.domain.Team;
 import no.soprasteria.bugster.infrastructure.db.repository.MatchRepository;
 import org.junit.Test;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -19,13 +20,28 @@ public class MatchServiceTest {
     @Test
     public void should_find_all_matches() throws Exception {
         MatchRepository repository = mock(MatchRepository.class);
-        List<Match> footballMatches = Arrays.asList(new FootballMatch(new Team("Leeds"), new Team("Leeds"), new Score(1, 1), "", ""), new FootballMatch(new Team("Leeds"), new Team("Leeds"), new Score(1, 1), "", ""), new FootballMatch(new Team("Leeds"), new Team("Leeds"), new Score(1, 1), "", ""), new FootballMatch(new Team("Leeds"), new Team("Leeds"), new Score(1, 1), "", ""));
+        List<Match> footballMatches = Arrays.asList(new FootballMatch(new Team("Leeds"), new Team("Leeds"), new Score(1, 1), "", LocalDateTime.now()),
+                new FootballMatch(new Team("Leeds"), new Team("Leeds"), new Score(1, 1), "", LocalDateTime.now()),
+                new FootballMatch(new Team("Leeds"), new Team("Leeds"), new Score(1, 1), "", LocalDateTime.now()),
+                new FootballMatch(new Team("Leeds"), new Team("Leeds"), new Score(1, 1), "", LocalDateTime.now()));
         when(repository.list()).thenReturn(footballMatches);
         List<Match> allMatches = new MatchService(repository).findAll();
 
         assertThat(!allMatches.isEmpty());
     }
 
+    @Test
+    public void should_find_all_matchesWithLeeds() throws Exception {
+        MatchRepository repository = mock(MatchRepository.class);
+        List<Match> footballMatches = Arrays.asList(new FootballMatch(new Team("Leeds"), new Team("Leeds"), new Score(1, 1), "", LocalDateTime.now()),
+                new FootballMatch(new Team("Leeds"), new Team("Leeds"), new Score(1, 1), "", LocalDateTime.now()),
+                new FootballMatch(new Team("Leeds"), new Team("Leeds"), new Score(1, 1), "", LocalDateTime.now()),
+                new FootballMatch(new Team("Leeds"), new Team("Leeds"), new Score(1, 1), "", LocalDateTime.now()));
+        when(repository.findByName("Leeds")).thenReturn(footballMatches);
+        List<Match> allMatches = new MatchService(repository).findAllByName("Leeds");
+
+        assertThat(!allMatches.isEmpty());
+    }
 //    @Test
 //    public void should_find_all_matchesWithLeeds() throws Exception {
 //        MatchRepository repository = mock(MatchRepository.class);
