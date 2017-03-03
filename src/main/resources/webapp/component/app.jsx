@@ -9,11 +9,12 @@ var intlData = {
 var Entry = React.createClass({
     mixins: [IntlMixin],
     render: function () {
+        var entryUrl = "#/bet/" + this.props.id;
         if (this.props.item.status === "inprogress") {
             return (
                 <div key={this.props.id} className="mdl-card mdl-cell mdl-cell--12-col">
                     <div className="mdl-card__media mdl-color-text--grey-50" style={{backgroundColor: "lightgreen"}}>
-                        <h3 color="black">{this.props.item.homeTeam.name} <b>{this.props.item.score.home}</b> vs <b>{this.props.item.score.away}</b> {this.props.item.awayTeam.name}</h3>
+                        <h3 color="black"><a href={entryUrl}>{this.props.item.homeTeam.name} <b>{this.props.item.score.home}</b> vs <b>{this.props.item.score.away}</b> {this.props.item.awayTeam.name}</a></h3>
                     </div>
                     <div className="mdl-card__supporting-text meta mdl-color-text--grey-600">
                         <div>
@@ -26,7 +27,7 @@ var Entry = React.createClass({
             return (
                 <div key={this.props.id} className="mdl-card mdl-cell mdl-cell--12-col">
                     <div className="mdl-card__media mdl-color-text--grey-50" style={{backgroundColor: "lightcoral"}}>
-                        <h3>{this.props.item.homeTeam.name} vs {this.props.item.awayTeam.name}</h3>
+                        <h3><a href={entryUrl}>{this.props.item.homeTeam.name} vs {this.props.item.awayTeam.name}</a></h3>
                     </div>
                     <div className="mdl-card__supporting-text meta mdl-color-text--grey-600">
                         <div>
@@ -77,7 +78,7 @@ var EntryListBox = React.createClass({
             dataType: 'json',
             cache: false,
             success: function (data) {
-                this.setState({data: data});
+                this.setState({data: {matches: data}});
             }.bind(this),
             error: function (xhr, status, err) {
                 console.error(this.props.url, status, err.toString());
@@ -123,13 +124,7 @@ var DetailedEntryView = React.createClass({
     getInitialState: function () {
         return {
             data: {
-                id: "-1",
-                released: "1420506000000",
-                title: "Loading",
-                image: "images\/default\/slide-07.jpg",
-                text: "",
-                next: {id: "-1", title: "Dummy!", text: ""},
-                previous: {id: "-1", title: "Dummy!", text: ""}
+
             }
         };
     },

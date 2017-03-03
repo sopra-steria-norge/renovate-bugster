@@ -35,7 +35,10 @@ public class TransactionRepository extends Repository<Transaction> {
 
     @Override
     public void update(Transaction update) {
-        throw new NotImplementedException();
+        database.doInTransaction(() -> {
+            database.executeOperation("UPDATE ");
+            database.executeOperation("");
+        });
     }
 
     private Transaction toTransaction(Database.Row row) {

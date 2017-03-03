@@ -1,6 +1,7 @@
 package no.soprasteria.bugster.business.transaction.service;
 
 import no.soprasteria.bugster.business.transaction.domain.Transaction;
+import no.soprasteria.bugster.business.transaction.domain.TransactionStatus;
 import no.soprasteria.bugster.business.user.domain.User;
 import no.soprasteria.bugster.infrastructure.db.repository.RepositoryLocator;
 import no.soprasteria.bugster.infrastructure.db.repository.TransactionRepository;
@@ -8,15 +9,14 @@ import no.soprasteria.bugster.infrastructure.db.repository.UserRepository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class TransactionService {
 
     private TransactionRepository transactionRepository;
-    private UserRepository userRepository;
 
     public TransactionService() {
         transactionRepository = RepositoryLocator.instantiate(TransactionRepository.class);
-        userRepository = RepositoryLocator.instantiate(UserRepository.class);
     }
 
     public List<Transaction> findAllUnhandled() {
@@ -24,12 +24,24 @@ public class TransactionService {
     }
 
     public void expedite(Transaction transaction) {
-        Optional<User> byId = userRepository.findById((int) transaction.getUser().getId());
+        if (transaction.getType().isPlus()) {
+            transaction.getUser().setBalance(transaction.getUser().getBalance().add(transaction.getValue()));
+        } else {
+            transaction.getUser().setBalance(transaction.getUser().getBalance().subtract(transaction.getValue()));
+        }
 
-//        userRepository.update(u);
+        transaction.setStatus(TransactionStatus.EXPEDITED);
+        transactionRepository.update(transaction);
     }
 
     public void undo(Transaction transaction) {
-        
+        if (transaction.getType().isPlus()) {
+            transaction.getUser().setBalance(transaction.getUser().getBalance().subtract(transaction.getValue()));
+        } else {
+            transaction.getUser().setBalance(transaction.getUser().getBalance().add(transaction.getValue()));
+        }
+
+        transaction.setStatus(TransactionStatus.EXPEDITED);
+        transactionRepository.update(transaction);
     }
 }

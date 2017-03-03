@@ -2,7 +2,6 @@ package no.soprasteria.bugster.application.controller;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import no.soprasteria.bugster.application.controller.dto.Matches;
 import no.soprasteria.bugster.application.controller.json.LocalDateTimeSerializer;
 import no.soprasteria.bugster.business.match.service.MatchService;
 import no.soprasteria.bugster.infrastructure.db.repository.MatchRepository;
@@ -31,8 +30,7 @@ public class IndexController {
     @Produces("application/json")
     @Path("/")
     public Response all() {
-        Matches matches = new Matches(matchService.findAll());
-        return Response.status(200).entity(gson.toJson(matches)).build();
+        return Response.status(200).entity(gson.toJson(matchService.findAll())).build();
     }
 
 }
