@@ -6,6 +6,7 @@ import no.soprasteria.bugster.infrastructure.db.repository.BetRepository;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
+import java.util.List;
 
 @Path("/bets")
 public class BetsController {
@@ -27,9 +28,8 @@ public class BetsController {
     @GET
     @Produces("application/json")
     public Response list() {
-        return Response.status(200).build();
-//         Bet bet = new Bet(new Odds(1, Result.H, 1.12), Result.H);
-//        return Response.status(200).entity(gson.toJson(bet)).build();
+        List<Bet> bets = betRepository.list();
+        return Response.status(200).entity(gson.toJson(bets)).build();
     }
 
 //    @GET

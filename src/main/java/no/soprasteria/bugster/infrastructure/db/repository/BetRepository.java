@@ -3,6 +3,7 @@ package no.soprasteria.bugster.infrastructure.db.repository;
 import no.soprasteria.bugster.business.bet.domain.Bet;
 import no.soprasteria.bugster.infrastructure.db.Database;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,8 +16,14 @@ public class BetRepository extends Repository<Bet> {
         return database.queryForList("select * from bet", this::toBet);
     }
 
-    private <T> T toBet(Database.Row row) {
-        return null;
+    private Bet toBet(Database.Row row) throws SQLException {
+        Bet bet = new Bet();
+        int id = row.getInt("id");
+        bet.setId(id);
+        bet.setAmount(row.getInt("amount"));
+        bet.setOdds(new OddsRepository().findById(id).get());
+        bet.setMatch(new MatchRepository().findById(bet.getOdds().getId()).get());
+        return bet;
     }
 
     @Override

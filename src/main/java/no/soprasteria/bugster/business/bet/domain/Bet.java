@@ -41,4 +41,12 @@ public class Bet {
     public void setAmount(Integer amount) {
         this.amount = amount;
     }
+
+    public void setMatch(Match match) {
+        this.match = match;
+    }
+
+    public Match getMatch() {
+        return match;
+    }
 }
