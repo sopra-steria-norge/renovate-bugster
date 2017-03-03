@@ -9,12 +9,13 @@ var intlData = {
 var Entry = React.createClass({
     mixins: [IntlMixin],
     render: function () {
-        var entryUrl = "#/bet/" + this.props.id;
         if (this.props.item.status === "inprogress") {
             return (
                 <div key={this.props.id} className="mdl-card mdl-cell mdl-cell--12-col">
                     <div className="mdl-card__media mdl-color-text--grey-50" style={{backgroundColor: "lightgreen"}}>
-                        <h3 color="black"><a href={entryUrl}>{this.props.item.homeTeam.name} <b>{this.props.item.score.home}</b> vs <b>{this.props.item.score.away}</b> {this.props.item.awayTeam.name}</a></h3>
+                        <h3 color="black"><a href={`#/bet/${this.props.id}`}>{this.props.item.homeTeam.name}
+                            <b>{this.props.item.score.home}</b> vs
+                            <b>{this.props.item.score.away}</b> {this.props.item.awayTeam.name}</a></h3>
                     </div>
                     <div className="mdl-card__supporting-text meta mdl-color-text--grey-600">
                         <div>
@@ -27,7 +28,8 @@ var Entry = React.createClass({
             return (
                 <div key={this.props.id} className="mdl-card mdl-cell mdl-cell--12-col">
                     <div className="mdl-card__media mdl-color-text--grey-50" style={{backgroundColor: "lightcoral"}}>
-                        <h3><a href={entryUrl}>{this.props.item.homeTeam.name} vs {this.props.item.awayTeam.name}</a></h3>
+                        <h3><a href={`#/bet/${this.props.id}`}>{this.props.item.homeTeam.name}
+                            vs {this.props.item.awayTeam.name}</a></h3>
                     </div>
                     <div className="mdl-card__supporting-text meta mdl-color-text--grey-600">
                         <div>
@@ -40,7 +42,8 @@ var Entry = React.createClass({
             return (
                 <div key={this.props.id} className="mdl-card mdl-cell mdl-cell--12-col">
                     <div className="mdl-card__media mdl-color-text--grey-50" style={{backgroundColor: "darkgrey"}}>
-                        <h3>{this.props.item.homeTeam.name} <b>{this.props.item.score.home}</b> vs <b>{this.props.item.score.away}</b> {this.props.item.awayTeam.name}</h3>
+                        <h3>{this.props.item.homeTeam.name} <b>{this.props.item.score.home}</b> vs
+                            <b>{this.props.item.score.away}</b> {this.props.item.awayTeam.name}</h3>
                     </div>
                     <div className="mdl-card__supporting-text meta mdl-color-text--grey-600">
                         <div>
@@ -124,9 +127,42 @@ var DetailedEntryView = React.createClass({
     getInitialState: function () {
         return {
             data: {
-
+                "id": 1,
+                "homeTeam": {
+                    "name": "Real Betis"
+                },
+                "awayTeam": {
+                    "name": "Real Sociedad"
+                },
+                "score": {
+                    "id": 1,
+                    "home": 1,
+                    "away": 2
+                },
+                "status": "inprogress",
+                "startDate": 1488566700000,
+                "odds": [
+                    {
+                        "id": 673,
+                        "value": 1.12,
+                        "matchId": 1,
+                        "result": "H"
+                    },
+                    {
+                        "id": 674,
+                        "value": 1.83,
+                        "matchId": 1,
+                        "result": "B"
+                    },
+                    {
+                        "id": 675,
+                        "value": 1.74,
+                        "matchId": 1,
+                        "result": "U"
+                    }
+                ]
             }
-        };
+        }
     },
     componentDidMount: function () {
         this.fetchEntry(this.props.url);
@@ -138,48 +174,109 @@ var DetailedEntryView = React.createClass({
         return nextState.data.id !== this.state.data.id;
     },
     render: function () {
-        if (this.props.item.status === "inprogress") {
+        var oddsNodes = this.state.data.odds.map(function (odd) {
             return (
-                <div key={this.props.id} className="mdl-card mdl-cell mdl-cell--12-col">
-                    <div className="mdl-card__media mdl-color-text--grey-50" style={{backgroundColor: "lightgreen"}}>
-                        <h3 color="black">{this.props.item.homeTeam.name} <b>{this.props.item.score.home}</b> vs
-                            <b>{this.props.item.score.away}</b> {this.props.item.awayTeam.name}</h3>
+                <div className="mdl-card mdl-cell mdl-cell--4-col">
+                    <div className="mdl-card__media mdl-color-text--grey-600 mdl-color--primary">
+                        <center><strong><a href={`#/confirm/${odd.id}/${odd.result}`}>{odd.result}</a></strong>
+                        </center>
                     </div>
-                    <div className="mdl-card__supporting-text meta mdl-color-text--grey-600">
+                    <div className="head-box meta meta--fill mdl-color-text--grey-600">
                         <div>
-                            <span>Startet <FormattedRelative value={this.props.item.startDate}/></span>
+                            <strong>{odd.value}</strong>
                         </div>
                     </div>
                 </div>
             );
-        } else if (this.props.item.status === "notstarted") {
+        });
+        if (this.state.data.status === "inprogress") {
             return (
-                <div key={this.props.id} className="mdl-card mdl-cell mdl-cell--12-col">
-                    <div className="mdl-card__media mdl-color-text--grey-50" style={{backgroundColor: "lightcoral"}}>
-                        <h3>{this.props.item.homeTeam.name} vs {this.props.item.awayTeam.name}</h3>
-                    </div>
-                    <div className="mdl-card__supporting-text meta mdl-color-text--grey-600">
-                        <div>
-                            <span>Starter <FormattedRelative value={this.props.item.startDate}/></span>
+                <div className="demo-blog__posts mdl-grid">
+                    <div key={this.state.data.id} className="mdl-card mdl-cell mdl-cell--12-col">
+                        <div className="mdl-card__media mdl-color-text--grey-50"
+                             style={{backgroundColor: "lightgreen"}}>
+                            <h3 color="black">{this.state.data.homeTeam.name} <b>{this.state.data.score.home}</b> vs
+                                <b>{this.state.data.score.away}</b> {this.state.data.awayTeam.name}</h3>
+                        </div>
+                        <div className="mdl-card__supporting-text meta mdl-color-text--grey-600">
+                            <div>
+                                <span>Startet <FormattedRelative value={this.state.data.startDate}/></span>
+                            </div>
                         </div>
                     </div>
+                    {oddsNodes}
+                </div>
+            );
+            return (
+                <div className="demo-blog__posts mdl-grid">
+                    <div key={this.state.data.id} className="mdl-card mdl-cell mdl-cell--12-col">
+                        <div className="mdl-card__media mdl-color-text--grey-50"
+                             style={{backgroundColor: "lightcoral"}}>
+                            <h3>{this.state.data.homeTeam.name} vs {this.state.data.awayTeam.name}</h3>
+                        </div>
+                        <div className="mdl-card__supporting-text meta mdl-color-text--grey-600">
+                            <div>
+                                <span>Starter <FormattedRelative value={this.state.data.startDate}/></span>
+                            </div>
+                        </div>
+                    </div>
+                    {oddsNodes}
                 </div>
             );
         } else {
             return (
-                <div key={this.props.id} className="mdl-card mdl-cell mdl-cell--12-col">
+                <div key={this.state.data.id} className="mdl-card mdl-cell mdl-cell--12-col">
                     <div className="mdl-card__media mdl-color-text--grey-50" style={{backgroundColor: "darkgrey"}}>
-                        <h3>{this.props.item.homeTeam.name} <b>{this.props.item.score.home}</b> vs
-                            <b>{this.props.item.score.away}</b> {this.props.item.awayTeam.name}</h3>
+                        <h3>{this.state.data.homeTeam.name} <b>{this.state.data.score.home}</b> vs
+                            <b>{this.state.data.score.away}</b> {this.state.data.awayTeam.name}</h3>
                     </div>
                     <div className="mdl-card__supporting-text meta mdl-color-text--grey-600">
                         <div>
-                            <span>Ferdigspilt med start <FormattedRelative value={this.props.item.startDate}/></span>
+                            <span>Ferdigspilt med start <FormattedRelative value={this.state.data.startDate}/></span>
                         </div>
                     </div>
                 </div>
             );
         }
+    }
+});
+
+var ConfirmBet = React.createClass({
+    mixins: [IntlMixin],
+    handleInputChange: function (event) {
+
+    },
+    handleSubmit: function (event) {
+        event.preventDefault();
+        var data = {
+            "odds": {
+            "id": 1
+        }};
+        $.ajax({
+            url: entryApiUrl,
+            dataType: 'json',
+            cache: false,
+            method: "POST",
+            data: data,
+            success: function (data) {
+                this.setState({data: data});
+            }.bind(this),
+            error: function (xhr, status, err) {
+                console.error(entryApiUrl, status, err.toString());
+            }.bind(this)
+        });
+    },
+    render: function () {
+        return (
+            <div className="demo-blog__posts mdl-grid">
+                <form onSubmit={this.handleSubmit}>
+                    <input name="value" type="number"
+                           value={this.state.betting}
+                           onChange={this.handleInputChange} />
+                    <button type="submit" value="Bekreft"/>
+                </form>
+            </div>
+        );
     }
 });
 
@@ -222,7 +319,7 @@ var Blank = React.createClass({
 var DisplayEntry = React.createClass({
     render: function () {
         var requestedId = this.props.route[1];
-        var entryApiUrl = "http://localhost:8000/bugster/match/" + requestedId;
+        var entryApiUrl = "http://localhost:8000/bugster/api/matches/" + requestedId;
         showElementWithId("#back-to-main-btn");
 
         return (
@@ -245,15 +342,18 @@ var App = React.createClass({
             case 'page':
                 Child = Home;
                 break;
-            case 'match':
-                Child = DetailedEntryView;
+            case 'bet':
+                Child = DisplayEntry;
+                break;
+            case 'confirm':
+                Child = ConfirmBet;
                 break;
             default:
                 Child = DefaultRoute;
         }
 
         return (
-            <Child route={routeInfo} />
+            <Child route={routeInfo}/>
         )
     }
 });
