@@ -3,8 +3,6 @@ package no.soprasteria.bugster.business.bet.domain;
 import no.soprasteria.bugster.business.match.domain.Match;
 import no.soprasteria.bugster.business.user.domain.User;
 
-import java.math.BigDecimal;
-
 public class Bet {
     private int id;
     private Odds odds;
@@ -53,6 +51,6 @@ public class Bet {
     }
 
     public double calculateWinnings() {
-        return getAmount() * odds.getValue();
+        return getAmount() * odds.getValue() * odds.getBonusFactor();
     }
 }

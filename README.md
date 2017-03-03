@@ -1,11 +1,15 @@
 # Renovate-bugster
-Applikasjon for workshopen "Java Craftmanship - Renoveringen"
+Tilpasset fagdag 2017
 
 ## Utgangspunkt
-Svenn er en inhouse utvikler i prosjekt X. Han har dessverre hatt en dårlig dag på jobben og har tatt vann over hode når han fant ut at han skulle refaktorert hele applikasjonen,
-han er strålende fornøyd med resultatet, men sliter litt med å få den til å bygge igjen.
+NorBets er et nyoppstartet bettingselskap lokalisert på Malta. Forrige utvikler mente at applikasjonen var nesten klar, 
+men etter å ha tatt en rask kikk på kildekoden ser du at det trengs å gjøres noen endringer. Det er flere strukturelle utfordringer,
+og deler av koden kunne vært mer lesbar. Du mistenker også at det kan være flere bugs i applikasjonen som må lukes ut. 
 
-Kan du hjelpe han få applikasjonen opp å kjøre slik at kjernefunksjonaliteten fungerer?
+Testere har rapportert om 
+helt fornøyde. 
+
+K
 ### Kjerne funksjonalitet
 Applikasjonen skal som et minimum dekke følgende funksjonalitet
 - Polling av vglive.no

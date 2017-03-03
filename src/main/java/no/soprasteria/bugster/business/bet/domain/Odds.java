@@ -9,11 +9,13 @@ public class Odds {
     private Double value;
     private Integer matchId;
     private Result result;
+    private Double bonusFactor;
 
     public Odds(Integer matchId, Result result, Double value){
         this.matchId = matchId;
         this.result = result;
         this.value = value;
+        initBonusFactor(value);
     }
 
     public Integer getId() {
@@ -28,6 +30,10 @@ public class Odds {
         return value;
     }
 
+    public double getBonusFactor(){
+        return bonusFactor;
+    }
+
     public Integer getMatchId() {
         return matchId;
     }
@@ -38,5 +44,11 @@ public class Odds {
 
     public LocalDateTime getTimestampedAt() {
         return LocalDateTime.now();
+    }
+
+    private void initBonusFactor(Double value) {
+        if(value > BonusFactorBoundary.VALUE){
+            bonusFactor = 1.5;
+        }
     }
 }
