@@ -1,8 +1,8 @@
 create table User (
   id SERIAL PRIMARY KEY,
   username VARCHAR2(50) UNIQUE NOT NULL,
-  password VARCHAR2(150) UNIQUE NOT NULL,
-  name VARCHAR2(50) NOT NULL
+  balance SERIAL
 );
 
-insert into USER (id, username, password, name) values (1, 'teide', 'password01', 'Tor Erik Eide');
+insert into USER (id, username, balance) values (1, 'bruker', 5000);
+insert into USER (id, username, balance) values (2, 'bruker2', 1000);

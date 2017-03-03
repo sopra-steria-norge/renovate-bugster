@@ -6,6 +6,7 @@ import no.soprasteria.bugster.business.match.domain.Match;
 import no.soprasteria.bugster.business.match.domain.Result;
 import no.soprasteria.bugster.business.polling.service.scraper.VgLiveResultsScraper;
 import no.soprasteria.bugster.business.polling.service.scraper.ResultsScraper;
+import no.soprasteria.bugster.infrastructure.db.repository.BetRepository;
 import no.soprasteria.bugster.infrastructure.db.repository.MatchRepository;
 import no.soprasteria.bugster.infrastructure.db.repository.OddsRepository;
 import org.quartz.Job;
@@ -27,6 +28,7 @@ public class LiveResultPollerJob implements Job {
     private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(LiveResultPollerJob.class);
     private MatchRepository matchRepository = RepositoryLocator.instantiate(MatchRepository.class);
     private OddsRepository oddsRepository = new OddsRepository();
+    private BetRepository betRepository = new BetRepository();
 
     public LiveResultPollerJob() {
     }
@@ -69,7 +71,7 @@ public class LiveResultPollerJob implements Job {
     }
 
     private void payoutToWinners(Match match) {
-
+        betRepository.listByMatch(match.getId());
     }
 
     private void updateOdds(Match match) {

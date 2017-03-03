@@ -1,6 +1,8 @@
 package no.soprasteria.bugster.infrastructure.db.repository;
 
 import no.soprasteria.bugster.business.bet.domain.Bet;
+import no.soprasteria.bugster.business.match.domain.Match;
+import no.soprasteria.bugster.business.user.domain.User;
 import no.soprasteria.bugster.infrastructure.db.Database;
 
 import java.sql.SQLException;
@@ -45,5 +47,20 @@ public class BetRepository extends Repository<Bet> {
     @Override
     public void update(Bet update) {
         throw new UnsupportedOperationException("Dette er ikke tillatt");
+    }
+
+    public List<Bet> listByUser(String name) {
+        UserRepository userRepository = new UserRepository();
+        User user = userRepository.findByName(name).get();
+        return database.queryForList("select * from bet where user_id = ?", this::toBet, user.getId());
+    }
+
+    public List<Bet> listByMatch(Integer id) {
+        for(int i = 0; i< list().size(); i++) {
+            Bet bet = list().get(i);
+
+        }
+        return null;
+//        database.queryForList("select * from bet b ")
     }
 }

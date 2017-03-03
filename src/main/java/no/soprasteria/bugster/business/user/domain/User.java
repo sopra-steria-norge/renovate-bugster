@@ -1,64 +1,30 @@
 package no.soprasteria.bugster.business.user.domain;
 
-import no.soprasteria.bugster.business.bet.domain.Bet;
-import no.soprasteria.bugster.business.transaction.domain.Transaction;
-
 import java.math.BigDecimal;
-import java.util.Collections;
-import java.util.List;
 
 public class User {
 
-    private Long id;
+    private Integer id;
     private String username;
-    private String name;
-    private String password;
-    private List<Transaction> transactions;
-    private List<Bet> bets;
     private BigDecimal balance;
 
-    public User(String username, String name, String password) {
-        this.id = null;
-        this.username = username;
-        this.name = name;
-        this.password = password;
-        this.transactions = Collections.emptyList();
-        this.bets = Collections.emptyList();
-        this.balance = BigDecimal.ZERO;
-    }
 
-    public User(long id, String username, String name, String password, List<Transaction> transactions, List<Bet> bets, BigDecimal balance) {
+    public User(int id, String username, BigDecimal balance) {
         this.id = id;
         this.username = username;
-        this.name = name;
-        this.password = password;
-        this.transactions = transactions;
-        this.bets = bets;
         this.balance = balance;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getUsername() {
         return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public List<Transaction> getTransactions() {
-        return transactions;
-    }
-
-    public void setTransactions(List<Transaction> transactions) {
-        this.transactions = transactions;
-    }
-
-    public List<Bet> getBets() {
-        return bets;
-    }
-
-    public void setBets(List<Bet> bets) {
-        this.bets = bets;
     }
 
     public BigDecimal getBalance() {
@@ -67,29 +33,5 @@ public class User {
 
     public void setBalance(BigDecimal balance) {
         this.balance = balance;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 }

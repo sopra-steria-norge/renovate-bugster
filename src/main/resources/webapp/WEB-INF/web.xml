@@ -19,4 +19,19 @@
         <url-pattern>/api/*</url-pattern>
     </servlet-mapping>
 
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>Protected Area</web-resource-name>
+            <url-pattern>/*</url-pattern>
+            <http-method>GET</http-method>
+            <http-method>POST</http-method>
+            <http-method>PUT</http-method>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>bruker</role-name>
+        </auth-constraint>
+    </security-constraint>
+    <security-role>
+        <role-name>bruker</role-name>
+    </security-role>
 </web-app>
