@@ -1,18 +1,17 @@
 package no.soprasteria.bugster.application.job.results;
 
+import no.soprasteria.bugster.business.bet.domain.Bet;
 import no.soprasteria.bugster.business.bet.domain.Odds;
 import no.soprasteria.bugster.business.match.domain.FootballMatch;
 import no.soprasteria.bugster.business.match.domain.Match;
 import no.soprasteria.bugster.business.match.domain.Result;
 import no.soprasteria.bugster.business.polling.service.scraper.VgLiveResultsScraper;
 import no.soprasteria.bugster.business.polling.service.scraper.ResultsScraper;
-import no.soprasteria.bugster.infrastructure.db.repository.BetRepository;
-import no.soprasteria.bugster.infrastructure.db.repository.MatchRepository;
-import no.soprasteria.bugster.infrastructure.db.repository.OddsRepository;
+import no.soprasteria.bugster.business.user.domain.User;
+import no.soprasteria.bugster.infrastructure.db.repository.*;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
-import no.soprasteria.bugster.infrastructure.db.repository.RepositoryLocator;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -71,7 +70,12 @@ public class LiveResultPollerJob implements Job {
     }
 
     private void payoutToWinners(Match match) {
-        betRepository.listByMatch(match.getId());
+        List<Bet> bets = betRepository.listByMatch(match.getId());
+        UserRepository userRepository = RepositoryLocator.instantiate(UserRepository.class);
+        for(Bet bet: bets){
+            User user = userRepository.findById(bet.getUser().getId()).get();
+            user.setBalance(user.getBalance().add(BigDecimal.valueOf(bet.calculateWinnings())));
+        }
     }
 
     private void updateOdds(Match match) {

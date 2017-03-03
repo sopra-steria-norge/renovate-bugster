@@ -6,6 +6,7 @@ import no.soprasteria.bugster.business.user.domain.User;
 import no.soprasteria.bugster.infrastructure.db.Database;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -56,11 +57,13 @@ public class BetRepository extends Repository<Bet> {
     }
 
     public List<Bet> listByMatch(Integer id) {
+        List<Bet> matches = new ArrayList<>();
         for(int i = 0; i< list().size(); i++) {
             Bet bet = list().get(i);
-
+            if(bet.getMatch().getId() == id){
+                matches.add(bet);
+            }
         }
-        return null;
-//        database.queryForList("select * from bet b ")
+        return matches;
     }
 }
