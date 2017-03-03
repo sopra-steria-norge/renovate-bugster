@@ -1,11 +1,13 @@
 package no.soprasteria.bugster.business.match.domain;
 
 
+import no.soprasteria.bugster.business.bet.domain.Odds;
 import no.soprasteria.bugster.business.team.domain.Team;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 public class FootballMatch implements Match {
@@ -16,6 +18,7 @@ public class FootballMatch implements Match {
     private Score score;
     private String status;
     private LocalDateTime startDate;
+    private List<Odds> odds;
 
     public FootballMatch(Team homeTeam, Team awayTeam, Score score, String status, LocalDateTime startDate) {
         this.homeTeam = homeTeam;
@@ -54,6 +57,11 @@ public class FootballMatch implements Match {
     public void updateScore(Score score) {
         this.score.setHome(score.getHome());
         this.score.setAway(score.getAway());
+    }
+
+    @Override
+    public void setOdds(List<Odds> odds) {
+        this.odds = odds;
     }
 
     public String getStatus() {

@@ -1,6 +1,9 @@
 package no.soprasteria.bugster.business.match.domain;
 
+import no.soprasteria.bugster.business.bet.domain.Odds;
 import no.soprasteria.bugster.business.team.domain.Team;
+
+import java.util.List;
 
 public interface Match extends Comparable<Match> {
 
@@ -19,4 +22,6 @@ public interface Match extends Comparable<Match> {
     Score getScore();
 
     void updateScore(Score score);
+
+    void setOdds(List<Odds> odds);
 }

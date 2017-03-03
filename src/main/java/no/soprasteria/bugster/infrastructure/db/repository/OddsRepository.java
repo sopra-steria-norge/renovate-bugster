@@ -30,7 +30,7 @@ public class OddsRepository extends Repository<Odds> {
         database.doInTransaction(() -> {
             int id = database.insert("insert into odds (match_id, result, value, timestamped_at) values (?, ?, ?, ?)",
                     odds.getMatchId(),
-                    odds.getResult(),
+                    odds.getResult().toString(),
                     odds.getValue(),
                     Timestamp.valueOf(odds.getTimestampedAt()));
             odds.setId(id);
@@ -43,9 +43,9 @@ public class OddsRepository extends Repository<Odds> {
     }
 
     public List<Odds> findBy(Integer matchId) {
-        return database.queryForList("select id, match_id, result, value from odds o1" +
-                " where o1.timestamped_at = (select max(timestamped_at from odds o2 where o1.id = o2.id) " +
-                " and match_id = ?", this::toOdds);
+        return database.queryForList("select * from odds o1 where o1.match_id = ?" +
+                " and o1.TIMESTAMPED_AT = (select max(o2.TIMESTAMPED_AT) from odds o2 where o1.MATCH_ID = o2.match_id" +
+                " and o1.result = o2.result);", this::toOdds, matchId);
     }
 
     private Odds toOdds(Database.Row row) throws SQLException {

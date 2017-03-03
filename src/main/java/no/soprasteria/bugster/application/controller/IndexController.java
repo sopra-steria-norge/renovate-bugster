@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import no.soprasteria.bugster.application.controller.dto.Matches;
 import no.soprasteria.bugster.application.controller.json.LocalDateTimeSerializer;
 import no.soprasteria.bugster.business.match.service.MatchService;
+import no.soprasteria.bugster.infrastructure.db.repository.MatchRepository;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -19,7 +20,7 @@ public class IndexController {
     private MatchService matchService;
 
     public IndexController() {
-        matchService = new MatchService();
+        matchService = new MatchService(new MatchRepository());
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.registerTypeAdapter(LocalDateTime.class, new LocalDateTimeSerializer());
 

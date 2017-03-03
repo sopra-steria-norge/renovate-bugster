@@ -1,30 +1,44 @@
 package no.soprasteria.bugster.business.bet.domain;
 
-import no.soprasteria.bugster.business.match.domain.Result;
+import no.soprasteria.bugster.business.match.domain.Match;
+import no.soprasteria.bugster.business.user.domain.User;
 
 public class Bet {
-    private Odds odds;
-    private Result bettedResult;
     private int id;
-
-    public Bet(Odds odds, Result bettedResult){
-        this.odds = odds;
-        this.bettedResult = bettedResult;
-    }
+    private Odds odds;
+    private User user;
+    private Integer amount;
+    private Match match;
 
     public Odds getOdds() {
         return odds;
     }
 
-    public Result getBettedResult() {
-        return bettedResult;
+    public void setOdds(Odds odds) {
+        this.odds = odds;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public void setId(int id) {
         this.id = id;
     }
 
-    public int getId() {
-        return id;
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Integer getAmount() {
+        return amount;
+    }
+
+    public void setAmount(Integer amount) {
+        this.amount = amount;
     }
 }

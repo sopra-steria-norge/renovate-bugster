@@ -1,8 +1,10 @@
 package no.soprasteria.bugster.business.match.domain;
 
 
+import no.soprasteria.bugster.business.bet.domain.Odds;
 import no.soprasteria.bugster.business.team.domain.Team;
 
+import java.util.List;
 import java.util.Objects;
 
 public class HandballMatch implements Match {
@@ -46,6 +48,11 @@ public class HandballMatch implements Match {
     @Override
     public void updateScore(Score score) {
         throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void setOdds(List<Odds> odds) {
+
     }
 
 

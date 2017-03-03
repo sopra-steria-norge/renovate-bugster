@@ -17,7 +17,7 @@ public class MatchRepository extends Repository<Match> {
 
     private static final Logger log = org.slf4j.LoggerFactory.getLogger(MatchRepository.class);
 
-    MatchRepository() {
+    public MatchRepository() {
         super();
     }
 
@@ -31,31 +31,12 @@ public class MatchRepository extends Repository<Match> {
 
     @Override
     public Optional<Match> findById(int id) {
-        return database.queryForSingle("SELECT m.id ,m.status, m.start_date, ht.name as home_team, at.name as away_team, s.home, s.away, s.id as scoreId, s.home_penalties, s.away_penalties, s.home_extratime, s.away_extratime " +
+        return database.queryForSingle("SELECT m.id ,m.status, m.start_date, m.home_team, m.away_team, s.home, s.away, s.id as scoreId " +
                 "FROM Match m " +
-                "INNER JOIN Team ht ON m.home_team = ht.id " +
-                "INNER JOIN Team at ON m.away_team = at.id " +
-                "INNER JOIN Score s ON m.score = s.id" +
+                "INNER JOIN Score s ON m.score = s.id " +
                 "WHERE m.id = ?", id, this::toFootballMatch);
     }
 
-    public List<Match> findByName(String name) {
-        return database.queryForList("SELECT m.id, m.status, m.start_date, ht.name as home_team, at.name as away_team, s.home, s.away, s.id as scoreId, s.home_penalties, s.away_penalties, s.home_extratime, s.away_extratime " +
-                "FROM Match m " +
-                "INNER JOIN Team ht ON m.home_team = ht.id " +
-                "INNER JOIN Team at ON m.away_team = at.id " +
-                "INNER JOIN Score s ON m.score = s.id" +
-                "WHERE ht.name = ? OR at.name = ?", this::toFootballMatch, name, name);
-    }
-
-    public List<Match> findByDate(String date) {
-        return database.queryForList("SELECT m.id ,m.status, m.start_date, ht.name as home_team, at.name as away_team, s.home, s.away, s.id as scoreId, s.home_penalties, s.away_penalties, s.home_extratime, s.away_extratime " +
-                "FROM Match m " +
-                "INNER JOIN Team ht ON m.home_team = ht.id " +
-                "INNER JOIN Team at ON m.away_team = at.id " +
-                "INNER JOIN Score s ON m.score = s.id" +
-                "WHERE start_date LIKE ?", this::toFootballMatch, "%" + date + "%");
-    }
 
     @Override
     public void insert(Match insert) {

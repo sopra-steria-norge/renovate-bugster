@@ -18,9 +18,8 @@ public class OddsController {
     private OddsRepository oddsRepository;
     private Gson gson = new Gson();
 
-    public OddsController(OddsRepository oddsRepository){
-        Preconditions.checkNotNull(oddsRepository);
-        this.oddsRepository = oddsRepository;
+    public OddsController(){
+        this.oddsRepository = new OddsRepository();
     }
 
     @GET
