@@ -1,7 +1,6 @@
 package no.soprasteria.bugster.application.server;
 
 import no.soprasteria.bugster.application.job.results.LiveResultPollerJob;
-import no.soprasteria.bugster.application.job.transactions.TransactionJob;
 import no.soprasteria.bugster.infrastructure.config.AppConfigFile;
 import no.soprasteria.bugster.infrastructure.db.Database;
 import no.soprasteria.bugster.infrastructure.util.ExceptionUtil;
@@ -82,17 +81,6 @@ public class ReloadableAppConfigFile extends AppConfigFile implements AppConfig 
                             .repeatForever())
                     .build();
             sched.scheduleJob(job, trigger);
-            JobDetail job2 = newJob(TransactionJob.class)
-                    .withIdentity("transactionJob", "group1")
-                    .build();
-            Trigger trigger2 = newTrigger()
-                    .withIdentity("transactionJob", "group1")
-                    .startNow()
-                    .withSchedule(simpleSchedule()
-                            .withIntervalInMinutes(2)
-                            .repeatForever())
-                    .build();
-            sched.scheduleJob(job2, trigger2);
         } catch (SchedulerException e) {
             e.printStackTrace();
         }

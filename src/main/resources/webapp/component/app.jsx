@@ -96,7 +96,7 @@ var EntryListBox = React.createClass({
 
 var Home = React.createClass({
     render: function () {
-        var entryListBoxUrl = "http://localhost:8000/bugster/api/index";
+        const entryListBoxUrl = "http://localhost:8000/bugster/api/matches";
         return (
             <div className="demo-blog__posts mdl-grid">
                 <EntryListBox url={entryListBoxUrl}/>
