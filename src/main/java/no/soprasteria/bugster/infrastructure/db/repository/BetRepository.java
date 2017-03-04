@@ -26,6 +26,7 @@ public class BetRepository extends Repository<Bet> {
         bet.setAmount(row.getInt("amount"));
         bet.setOdds(new OddsRepository().findById(id).get());
         bet.setMatch(new MatchRepository().findById(bet.getOdds().getId()).get());
+        bet.setUser(new UserRepository().findById(row.getInt("user_id")).get());
         return bet;
     }
 

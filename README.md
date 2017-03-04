@@ -15,6 +15,7 @@ Du mistenker også at det kan være flere bugs i applikasjonen som må lukes ut.
       - Det er meningen at det skal jobbes testdrevet - tester skal avdekke feil før feilen rettes
       - Merk at deler av koden kan vise seg vanskelig å skrive tester for uten omskriving
  - Refaktorere applikasjonen etter beste evne
+ - Forbedre algoritmen for beregning av odds
  - Utvide applikasjonen med funksjonalitet for å sette inn og ta ut penger
 
 ### Diskusjonspunkter
@@ -22,6 +23,7 @@ Du mistenker også at det kan være flere bugs i applikasjonen som må lukes ut.
  - Hva burde vært endret i applikasjonen
  - Hvordan kan man gå frem for å gjøre dette
  - Hvordan fungerer utstrakt bruk av Mockito når man refaktorer kode?
+ - Er det noe skaleringsproblemer? 
 
 
 ### Ekstraoppgaver

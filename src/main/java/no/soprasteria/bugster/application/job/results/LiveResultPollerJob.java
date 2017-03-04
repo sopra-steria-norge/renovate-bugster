@@ -48,10 +48,10 @@ public class LiveResultPollerJob implements Job {
                     Match current = existingMatches.get(0);
                     current.updateScore(match.getScore());
                     matchRepository.update(current);
-                    updateOdds(current);
                     if(hasChangedStatusToEnded(current, match)) {
-                        payoutToWinners(match);
+                        payoutToWinners(current);
                     }
+                    updateOdds(current);
                 } else {
                     matchRepository.insert(match);
                     updateOdds(match);
