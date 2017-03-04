@@ -1,10 +1,11 @@
 package no.soprasteria.bugster.business.bet.domain;
 
 import no.soprasteria.bugster.business.match.domain.Result;
+import org.quartz.impl.jdbcjobstore.Constants;
 
 import java.time.LocalDateTime;
 
-public class Odds {
+public class Odds implements OddsContants {
     private Integer id;
     private Double value;
     private Integer matchId;
@@ -47,7 +48,7 @@ public class Odds {
     }
 
     private void initBonusFactor(Double value) {
-        if(value > BonusFactorBoundary.VALUE){
+        if(value > BONUS_BOUNDARY){
             bonusFactor = 1.5;
         }
     }

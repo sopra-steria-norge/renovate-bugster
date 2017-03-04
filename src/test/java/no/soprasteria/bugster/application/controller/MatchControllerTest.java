@@ -4,10 +4,7 @@ import io.restassured.path.json.JsonPath;
 import no.soprasteria.bugster.application.server.AppConfig;
 import no.soprasteria.bugster.application.server.ReloadableAppConfigFile;
 import no.soprasteria.bugster.business.bet.domain.Odds;
-import no.soprasteria.bugster.business.match.domain.FootballMatch;
-import no.soprasteria.bugster.business.match.domain.Match;
-import no.soprasteria.bugster.business.match.domain.Result;
-import no.soprasteria.bugster.business.match.domain.Score;
+import no.soprasteria.bugster.business.match.domain.*;
 import no.soprasteria.bugster.business.team.domain.Team;
 import no.soprasteria.bugster.infrastructure.db.Database;
 import no.soprasteria.bugster.infrastructure.db.repository.MatchRepository;
@@ -66,28 +63,18 @@ public class MatchControllerTest extends JerseyTest {
 
     @Test
     public void lists_all_matches() throws Exception {
-        Match match = new FootballMatch(
-                new Team("Liverpool"),
-                new Team("IK Start"),
-                new Score(0, 3),
-                "completed",
-                LocalDateTime.now());
-        Match match2 = new FootballMatch(
-                new Team("Manchester United"),
-                new Team("Arsenal"),
-                new Score(2, 0),
-                "completed",
-                LocalDateTime.now());
-        matchRepository.insert(match);
-        matchRepository.insert(match2);
+        Match firstMatch = new MatchTestData().build();
+        Match secondMatch = new MatchTestData().build();
+        matchRepository.insert(firstMatch);
+        matchRepository.insert(secondMatch);
 
         Response response = target("matches").request().get();
 
         assertThat(response.getStatus()).isEqualTo(200);
 
         JsonPath jsonPath = new JsonPath(response.readEntity(String.class));
-        assertThatReponseMatchesAt(0, jsonPath, match);
-        assertThatReponseMatchesAt(1, jsonPath, match2);
+        assertThatReponseMatchesAt(0, jsonPath, firstMatch);
+        assertThatReponseMatchesAt(1, jsonPath, secondMatch);
     }
 
     @Test
