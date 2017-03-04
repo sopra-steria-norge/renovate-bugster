@@ -13,9 +13,7 @@ var Entry = React.createClass({
             return (
                 <div key={this.props.id} className="mdl-card mdl-cell mdl-cell--12-col">
                     <div className="mdl-card__media mdl-color-text--grey-50" style={{backgroundColor: "lightgreen"}}>
-                        <h3 color="black"><a href={`#/bet/${this.props.id}`}>{this.props.item.homeTeam.name}
-                            <b>{this.props.item.score.home}</b> vs
-                            <b>{this.props.item.score.away}</b> {this.props.item.awayTeam.name}</a></h3>
+                        <h3 color="black"><a href={`#/bet/${this.props.id}`}>{this.props.item.homeTeam.name} <b>{this.props.item.score.home}</b> vs <b>{this.props.item.score.away}</b> {this.props.item.awayTeam.name}</a></h3>
                     </div>
                     <div className="mdl-card__supporting-text meta mdl-color-text--grey-600">
                         <div>
@@ -28,8 +26,7 @@ var Entry = React.createClass({
             return (
                 <div key={this.props.id} className="mdl-card mdl-cell mdl-cell--12-col">
                     <div className="mdl-card__media mdl-color-text--grey-50" style={{backgroundColor: "lightcoral"}}>
-                        <h3><a href={`#/bet/${this.props.id}`}>{this.props.item.homeTeam.name}
-                            vs {this.props.item.awayTeam.name}</a></h3>
+                        <h3><a href={`#/bet/${this.props.id}`}>{this.props.item.homeTeam.name} vs {this.props.item.awayTeam.name}</a></h3>
                     </div>
                     <div className="mdl-card__supporting-text meta mdl-color-text--grey-600">
                         <div>
@@ -42,8 +39,7 @@ var Entry = React.createClass({
             return (
                 <div key={this.props.id} className="mdl-card mdl-cell mdl-cell--12-col">
                     <div className="mdl-card__media mdl-color-text--grey-50" style={{backgroundColor: "darkgrey"}}>
-                        <h3>{this.props.item.homeTeam.name} <b>{this.props.item.score.home}</b> vs
-                            <b>{this.props.item.score.away}</b> {this.props.item.awayTeam.name}</h3>
+                        <h3 color="black"><a href={`#/bet/${this.props.id}`}>{this.props.item.homeTeam.name} <b>{this.props.item.score.home}</b> vs <b>{this.props.item.score.away}</b> {this.props.item.awayTeam.name}</a></h3>
                     </div>
                     <div className="mdl-card__supporting-text meta mdl-color-text--grey-600">
                         <div>
@@ -195,8 +191,7 @@ var DetailedEntryView = React.createClass({
                     <div key={this.state.data.id} className="mdl-card mdl-cell mdl-cell--12-col">
                         <div className="mdl-card__media mdl-color-text--grey-50"
                              style={{backgroundColor: "lightgreen"}}>
-                            <h3 color="black">{this.state.data.homeTeam.name} <b>{this.state.data.score.home}</b> vs
-                                <b>{this.state.data.score.away}</b> {this.state.data.awayTeam.name}</h3>
+                            <h3 color="black">{this.state.data.homeTeam.name} <b>{this.state.data.score.home}</b> vs <b>{this.state.data.score.away}</b> {this.state.data.awayTeam.name}</h3>
                         </div>
                         <div className="mdl-card__supporting-text meta mdl-color-text--grey-600">
                             <div>
@@ -227,8 +222,7 @@ var DetailedEntryView = React.createClass({
             return (
                 <div key={this.state.data.id} className="mdl-card mdl-cell mdl-cell--12-col">
                     <div className="mdl-card__media mdl-color-text--grey-50" style={{backgroundColor: "darkgrey"}}>
-                        <h3>{this.state.data.homeTeam.name} <b>{this.state.data.score.home}</b> vs
-                            <b>{this.state.data.score.away}</b> {this.state.data.awayTeam.name}</h3>
+                        <h3>{this.state.data.homeTeam.name} <b>{this.state.data.score.home}</b> vs <b>{this.state.data.score.away}</b> {this.state.data.awayTeam.name}</h3>
                     </div>
                     <div className="mdl-card__supporting-text meta mdl-color-text--grey-600">
                         <div>
