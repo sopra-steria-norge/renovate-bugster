@@ -29,6 +29,12 @@ public class BetsController {
         this.userRepository = RepositoryLocator.instantiate(UserRepository.class);
     }
 
+    public BetsController(boolean testing){
+        if(!testing){
+            throw new IllegalArgumentException("Kun tillatt for test");
+        }
+    }
+
     @POST
     @Consumes("application/json")
     public void placebet(String json){
