@@ -29,14 +29,10 @@ Du mistenker også at det kan være flere bugs i applikasjonen som må lukes ut.
 ### Ekstraoppgaver
  - Tilby mulighet til å tippe også på kamper som skjer frem i tid (pr. nå 'støtte' kun dagens kamper)
  - Grensesnitt for å søke etter kamper på en gitt dag
- - Grensesnitt for å søke etter kamper på en gitt dag
  - Grensesnitt for å søke ut dagens begivenheter basert på tilstand
  - Grensesnitt for å søke opp et gitt lag
         
         
-### Utvidelser
-Sven skulle gjerne sett at det var mulig å gruppere ting som hører sammen under en paraply. F.eks ved turneringer.
-
 #### Tips & Utviklerverktøy
 **NB!** Har du husket å oppdatere settings.xml slik at du får kontakt med maven central?
 [JSON-formatter til Chrome](https://chrome.google.com/webstore/detail/json-formatter/bcjindcccaagfpapjjmafapmmgkkhgoa?utm_source=chrome-app-launcher-info-dialog)
