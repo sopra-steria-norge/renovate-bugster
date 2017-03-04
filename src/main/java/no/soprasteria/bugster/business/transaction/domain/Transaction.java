@@ -3,9 +3,8 @@ package no.soprasteria.bugster.business.transaction.domain;
 import no.soprasteria.bugster.business.user.domain.User;
 
 import java.math.BigDecimal;
-
+//TODOO
 public class Transaction {
-
     private User user;
     private TransactionType type;
     private boolean revoked;
