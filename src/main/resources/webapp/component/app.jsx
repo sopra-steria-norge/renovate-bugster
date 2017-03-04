@@ -167,15 +167,13 @@ var DetailedEntryView = React.createClass({
         this.fetchEntry(nextProps.url);
     },
     shouldComponentUpdate: function (nextProps, nextState) {
-        return nextState.data.id !== this.state.data.id;
-    },
-    render: function () {
+        return nextState.data.homeTeam.name !== this.state.data.homeTeam.name || nextState.data.awayTeam.name !== this.state.awayTeam.name;
+    },    render: function () {
         var oddsNodes = this.state.data.odds.map(function (odd) {
             return (
                 <div className="mdl-card mdl-cell mdl-cell--4-col">
                     <div className="mdl-card__media mdl-color-text--grey-600 mdl-color--primary">
-                        <center><strong><a href={`#/confirm/${odd.id}/${odd.result}`}>{odd.result}</a></strong>
-                        </center>
+                        <center><strong><a href={`#/confirm/${odd.id}/${odd.result}`}>{odd.result}</a></strong></center>
                     </div>
                     <div className="head-box meta meta--fill mdl-color-text--grey-600">
                         <div>
@@ -191,7 +189,8 @@ var DetailedEntryView = React.createClass({
                     <div key={this.state.data.id} className="mdl-card mdl-cell mdl-cell--12-col">
                         <div className="mdl-card__media mdl-color-text--grey-50"
                              style={{backgroundColor: "lightgreen"}}>
-                            <h3 color="black">{this.state.data.homeTeam.name} <b>{this.state.data.score.home}</b> vs <b>{this.state.data.score.away}</b> {this.state.data.awayTeam.name}</h3>
+                            <h3 color="black">{this.state.data.homeTeam.name} <b>{this.state.data.score.home}</b> vs
+                                <b>{this.state.data.score.away}</b> {this.state.data.awayTeam.name}</h3>
                         </div>
                         <div className="mdl-card__supporting-text meta mdl-color-text--grey-600">
                             <div>
@@ -202,6 +201,7 @@ var DetailedEntryView = React.createClass({
                     {oddsNodes}
                 </div>
             );
+        } else if(this.state.data.status === "notstarted") {
             return (
                 <div className="demo-blog__posts mdl-grid">
                     <div key={this.state.data.id} className="mdl-card mdl-cell mdl-cell--12-col">
@@ -238,75 +238,61 @@ var DetailedEntryView = React.createClass({
 var ConfirmBet = React.createClass({
     mixins: [IntlMixin],
     handleInputChange: function (event) {
-
+        const target = event.target;
+        const name = target.name;
+        const value = target.value;
+        this.setState({
+            [name]: value
+        });
     },
     handleSubmit: function (event) {
         event.preventDefault();
-        var data = {
-            "odds": {
-            "id": 1
-        }};
+        var entryApiUrl = "http://localhost:8000/bugster/api/bets";
         $.ajax({
             url: entryApiUrl,
             dataType: 'json',
             cache: false,
             method: "POST",
-            data: data,
+            contentType: "application/json",
+            data: JSON.stringify(this.state),
             success: function (data) {
-                this.setState({data: data});
+                alert("Bet plassert.");
+                window.location.replace("http://localhost:8000/bugster/")
             }.bind(this),
             error: function (xhr, status, err) {
                 console.error(entryApiUrl, status, err.toString());
             }.bind(this)
         });
     },
+    getInitialState: function () {
+        return {
+            amount: 100,
+            odds: {
+                id: this.props.route[1]
+            },
+            user : this.props.user
+        };
+    },
     render: function () {
         return (
             <div className="demo-blog__posts mdl-grid">
-                <form onSubmit={this.handleSubmit}>
-                    <input name="value" type="number"
-                           value={this.state.betting}
-                           onChange={this.handleInputChange} />
-                    <button type="submit" value="Bekreft"/>
-                </form>
+                <div className="mdl-card mdl-cell mdl-cell--12-col">
+                    <div className="mdl-card__media mdl-color-text--grey-600 mdl-color--primary">
+                        <center><strong>Plasser bet</strong></center>
+                    </div>
+                    <div className="head-box meta meta--fill mdl-color-text--grey-600">
+                        <div>
+                    <form onSubmit={this.handleSubmit}>
+                        <input name="amount" type="number"
+                               value={this.state.amount}
+                               onChange={this.handleInputChange} />
+                        <button type="submit">Bekreft</button>
+                    </form>
+                        </div>
+                    </div>
+                    </div>
             </div>
         );
-    }
-});
-
-var Loading = React.createClass({
-    componentDidUpdate: function (prevProps, prevState) {
-        componentHandler.upgradeAllRegistered();
-    },
-    render: function () {
-        return (
-            <div id="loading" className="loading-entry mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
-                <div className="mdl-spinner mdl-js-spinner is-active"></div>
-            </div>
-        );
-    }
-});
-
-var LoadingData = React.createClass({
-    shouldComponentUpdate: function (nextProps, nextState) {
-        return nextProps.disabled !== this.props.disabled;
-    },
-    render: function () {
-        var Child;
-        if (this.props.disabled) {
-            Child = Blank;
-        } else {
-            Child = Loading;
-        }
-        return (
-            <Child />
-        );
-    }
-});
-
-var Blank = React.createClass({
-    render: function () {
-        return false;
     }
 });
 
@@ -326,11 +312,35 @@ var App = React.createClass({
     componentDidUpdate: function (prevProps, prevState) {
         componentHandler.upgradeAllRegistered();
     },
+    fetchEntry: function () {
+        $.ajax({
+            url: "http://localhost:8000/bugster/api/users",
+            dataType: 'json',
+            cache: false,
+            success: function (data) {
+                this.setState({data: {user: data}});
+            }.bind(this),
+            error: function (xhr, status, err) {
+                console.error("http://localhost:8000/bugster/api/users", status, err.toString());
+            }.bind(this)
+        });
+    },
+    componentDidMount: function () {
+        this.fetchEntry();
+    },
+    shouldComponentUpdate: function (nextProps, nextState) {
+        return this.props.route !== nextProps.route || this.state.data.user.id !== nextState.data.user.id;
+    },
+    getInitialState: function () {
+        return {
+            data: { user: {id: 0, username: "NA", balance: 0}}
+        };
+    },
     render: function () {
         hideElementWithId("#back-to-main-btn");
-        var DefaultRoute = Home;
-        var Child;
-        var routeInfo = this.props.route.substring(1).split("/");
+        const DefaultRoute = Home;
+        let Child;
+        const routeInfo = this.props.route.substring(1).split("/");
 
         switch (routeInfo[0]) {
             case 'page':
@@ -345,9 +355,10 @@ var App = React.createClass({
             default:
                 Child = DefaultRoute;
         }
-
+        let userInfoString = this.state.data.user.username +" (" + this.state.data.user.balance + " $)";
+        $("#userInfo").text(userInfoString);
         return (
-            <Child route={routeInfo}/>
+            <Child route={routeInfo} user={this.state.data.user}/>
         )
     }
 });
